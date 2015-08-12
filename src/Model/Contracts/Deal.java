@@ -5,7 +5,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.sql.Date;
-
+//SQLitestudio need
 @DatabaseTable (tableName = "deals")
 public class Deal {
     @DatabaseField(generatedId = true)
