@@ -1,6 +1,7 @@
 package Model.Contracts;
 
 import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -19,9 +20,9 @@ public class BasicContract {
     private String bank;
     @DatabaseField (columnName = "contractsType")
     private String contractsType;
-    @DatabaseField
+    @DatabaseField(dataType = DataType.SQL_DATE)
     private Date dateStart;
-    @DatabaseField
+    @DatabaseField(dataType = DataType.SQL_DATE)
     private Date dateFinish;
     @DatabaseField(columnName = "buy")
     private String buyAsset;

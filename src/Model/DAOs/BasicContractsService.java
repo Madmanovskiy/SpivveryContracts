@@ -29,16 +29,34 @@ public class BasicContractsService {
         dao.create(bc);
     }
 
+    public boolean isIdconsists(int id) throws SQLException {
+        return dao.idExists(String.valueOf(id));
+    }
+
 
     public static void main(String[] args) {
-        BasicContract ac = new BasicContract(0, BasicContract.Bank.BNP, BasicContract.ContractsType.ACC, new Date(System.currentTimeMillis()), Date.valueOf("2015-10-21"),
-                BasicContract.Assets.CHF, BasicContract.Assets.EUR,500000d, 2, 1.5034d);
+        BasicContract ac = new BasicContract(0, BasicContract.Bank.HSBC, BasicContract.ContractsType.ACC, new Date(System.currentTimeMillis()), Date.valueOf("2015-10-21"),
+                BasicContract.Assets.CHF, BasicContract.Assets.EUR, 500000d, 2, 1.5034d);
 
-//        Deal deal1 = new Deal(0,ac,Date.valueOf("2015-08-30"), Deal.DealsType.BUY, 1.5060d, 500000d);
+        BasicContract ac1 = new BasicContract(0, BasicContract.Bank.UBS, BasicContract.ContractsType.ACC, new Date(System.currentTimeMillis()), Date.valueOf("2015-10-21"),
+                BasicContract.Assets.CHF, BasicContract.Assets.EUR, 500000d, 2, 1.5034d);
 
-        try{
+        Deal deal1 = new Deal(0, ac, Date.valueOf("2015-09-11"), Deal.DealsType.BUY, 1.6060d, 500000d);
+        Deal deal2 = new Deal(0, ac, Date.valueOf("2015-09-12"), Deal.DealsType.BUY, 1.7060d, 500000d);
+        Deal deal3 = new Deal(0, ac, Date.valueOf("2015-09-13"), Deal.DealsType.BUY, 1.8060d, 1000000d);
+        Deal deal4 = new Deal(0, ac1, Date.valueOf("2015-09-14"), Deal.DealsType.BUY, 1.9060d, 1000000d);
+        Deal deal5 = new Deal(0, ac1, Date.valueOf("2015-09-14"), Deal.DealsType.BUY, 2.9060d, 1000000d);
+
+        try {
             BasicContractsService bcs = new BasicContractsService();
+            DealService ds = new DealService();
             bcs.addContractToDB(ac);
+            bcs.addContractToDB(ac1);
+            ds.addDealToDB(deal1);
+            ds.addDealToDB(deal2);
+            ds.addDealToDB(deal3);
+            ds.addDealToDB(deal4);
+            ds.addDealToDB(deal5);
         } catch (SQLException e) {
             e.printStackTrace();
         }

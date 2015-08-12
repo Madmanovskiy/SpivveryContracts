@@ -1,6 +1,7 @@
 package Model.Contracts;
 
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -12,7 +13,7 @@ public class Deal {
     private  int id;
     @DatabaseField(columnName = "contractsID", foreign = true)
     private  BasicContract basicContract;
-    @DatabaseField
+    @DatabaseField(dataType = DataType.SQL_DATE)
     private  Date dealDate;
     @DatabaseField
     private  String dealType;
