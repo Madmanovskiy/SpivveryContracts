@@ -1,15 +1,15 @@
 package Model.Contracts;
 
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 public class Accumulator extends BasicContract {
     private final double lowerStrikeLevel;
     private final double knockOutLevel;
 
-    public Accumulator(Bank bank, ContractsType contractsType, LocalDate dateStart, LocalDate dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
+    public Accumulator(int id,Bank bank, ContractsType contractsType, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
                        double lowerStrikeLevel, double knockOutLevel) {
-        super(bank, contractsType, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef);
+        super(id, bank, contractsType, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef);
         this.lowerStrikeLevel = lowerStrikeLevel;
         this.knockOutLevel = knockOutLevel;
     }

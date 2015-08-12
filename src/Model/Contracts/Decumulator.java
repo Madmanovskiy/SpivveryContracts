@@ -1,15 +1,16 @@
 package Model.Contracts;
 
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Decumulator extends BasicContract {
     private final double higherStrikeLevel;
     private final double knockOutLevel;
 
-    public Decumulator(Bank bank, ContractsType contractsType, LocalDate dateStart, LocalDate dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
+    public Decumulator(int id, Bank bank, ContractsType contractsType, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
                        double higherStrikeLevel, double knockOutLevel) {
-        super(bank, contractsType, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef);
+        super(id, bank, contractsType, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef);
         this.higherStrikeLevel = higherStrikeLevel;
         this.knockOutLevel = knockOutLevel;
     }

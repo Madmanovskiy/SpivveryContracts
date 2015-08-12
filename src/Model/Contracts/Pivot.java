@@ -1,6 +1,7 @@
 package Model.Contracts;
 
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Pivot extends BasicContract {
@@ -9,9 +10,9 @@ public class Pivot extends BasicContract {
     private final double lowerStrikeLevel;
     private final double pivotPrice;
 
-    public Pivot(Bank bank, ContractsType contractsType, LocalDate dateStart, LocalDate dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
+    public Pivot(int id,Bank bank, ContractsType contractsType, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
                  double higherStrikeLevel, double lowerStrikeLevel, double pivotPrice) {
-        super(bank, contractsType, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef);
+        super(id, bank, contractsType, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef);
         this.higherStrikeLevel = higherStrikeLevel;
         this.lowerStrikeLevel = lowerStrikeLevel;
         this.pivotPrice = pivotPrice;

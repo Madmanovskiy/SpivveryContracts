@@ -1,79 +1,117 @@
 package Model.Contracts;
 
+import com.j256.ormlite.dao.ForeignCollection;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.table.DatabaseTable;
+
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-public abstract class BasicContract {
-    private final Bank bank;
-    private final ContractsType contractsType;
-    private final LocalDate dateStart;
-    private final LocalDate dateFinish;
-    private final Assets buyAsset;
-    private final Assets sellAsset;
-    private final double assetValue;
-    private final int leverage;
-    private final double spotRef;
-    private final String id;
 
-    private List<Deal> deals = new ArrayList<>();
+@DatabaseTable(tableName = "Contracts")
+public class BasicContract {
+    @DatabaseField(generatedId = true)
+    private int id;
+    @DatabaseField(columnName = "contractID")
+    private String contractID;
+    @DatabaseField
+    private String bank;
+    @DatabaseField (columnName = "contractsType")
+    private String contractsType;
+    @DatabaseField
+    private Date dateStart;
+    @DatabaseField
+    private Date dateFinish;
+    @DatabaseField(columnName = "buy")
+    private String buyAsset;
+    @DatabaseField(columnName = "sell")
+    private String sellAsset;
+    @DatabaseField(columnName = "value")
+    private double assetValue;
+    @DatabaseField
+    private int leverage;
+    @DatabaseField
+    private double spotRef;
+    @DatabaseField
     private boolean isClose;
 
-    public BasicContract(Bank bank, ContractsType contractsType, LocalDate dateStart, LocalDate dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef) {
-        this.bank = bank;
-        this.contractsType = contractsType;
+    @ForeignCollectionField(eager = true)
+    private ForeignCollection<Deal> deals;
+
+    public BasicContract() {
+
+    }
+
+    public BasicContract(int id, Bank bank, ContractsType contractsType, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef) {
+        this.id = id;
+        this.bank = bank.toString();
+        this.contractsType = contractsType.toString();
         this.dateStart = dateStart;
         this.dateFinish = dateFinish;
-        this.buyAsset = buyAsset;
-        this.sellAsset = sellAsset;
+        this.buyAsset = buyAsset.toString();
+        this.sellAsset = sellAsset.toString();
         this.assetValue = assetValue;
         this.leverage = leverage;
         this.spotRef = spotRef;
-        this.id = bank.toString() +
+        this.contractID = bank.toString() +
                 contractsType.toString() +
                 buyAsset.toString() +
                 sellAsset.toString() +
-                dateStart.getDayOfMonth() +
-                dateStart.getMonth() +
-                dateStart.getYear();
+                dateStart.toLocalDate().getDayOfMonth() +
+                dateStart.toLocalDate().getMonthValue() +
+                dateStart.toLocalDate().getYear();
 //        +OPTIONAL 1 - 2 PARAMETERS;
         isClose = false;
     }
 
-    public Bank getBank() {
-        return bank;
-    }
-
-    public Assets getBuyAsset() {
-        return buyAsset;
-    }
-
-    public LocalDate getDateFinish() {
-        return dateFinish;
-    }
-
-    public LocalDate getDateStart() {
-        return dateStart;
-    }
 
     public double getAssetValue() {
         return assetValue;
     }
 
-    public List<Deal> getDeals() {
+    public String getBank() {
+        return bank;
+    }
+
+    public String getBuyAsset() {
+        return buyAsset;
+    }
+
+    public String getContractsType() {
+        return contractsType;
+    }
+
+    public Date getDateFinish() {
+        return dateFinish;
+    }
+
+    public Date getDateStart() {
+        return dateStart;
+    }
+
+    public ForeignCollection<Deal> getDeals() {
         return deals;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
+    }
+
+    public String getContractID() {
+        return contractID;
+    }
+
+    public boolean isClose() {
+        return isClose;
     }
 
     public int getLeverage() {
         return leverage;
     }
 
-    public boolean isClose() {
-        return isClose;
+    public double getSpotRef() {
+        return spotRef;
     }
 
     public boolean IsContractExpired() {
@@ -81,28 +119,20 @@ public abstract class BasicContract {
     }
 
     public int getRemainingWeeks(LocalDate fromDate) {
-        return (dateFinish.getDayOfYear() - fromDate.getDayOfYear()) / 7;
+        return (dateFinish.toLocalDate().getDayOfYear() - fromDate.getDayOfYear()) / 7;
     }
 
-    public Assets getSellAsset() {
+    public String getSellAsset() {
         return sellAsset;
     }
 
-    public double getSpotRef() {
-        return spotRef;
+    public double calculationResult(){
+        throw new UnsupportedOperationException();
     }
 
-    public ContractsType getContractsType() {
-        return contractsType;
+    public double transactionsVolume(double currentPrice){
+        throw new UnsupportedOperationException();
     }
-
-    public void addDealWithContract(Deal deal) {
-        deals.add(deal);
-    }
-
-    public abstract double calculationResult();
-
-    public abstract double transactionsVolume(double currentPrice);
 
     public enum Bank {
         UBS,
