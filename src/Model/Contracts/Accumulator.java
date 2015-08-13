@@ -12,9 +12,8 @@ public class Accumulator extends BasicContract {
 
     }
 
-    public Accumulator(int id, Bank bank, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
-                       double lowerStrikeLevel, double knockOutLevel, Strike strike) {
-        super(bank, ContractsType.ACC, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef, strike);
+    public Accumulator(Bank bank, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef) {
+        super(bank, ContractsType.ACC, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef);
     }
 
     public boolean isStrikeCrossedDown(double currentPrice) {
@@ -34,8 +33,8 @@ public class Accumulator extends BasicContract {
     public double calculationResult() {
         double result = 0d;
         for (Deal d : getDeals()){
-            if (isKnockOutCrossedUp(d.getAssetsPrice())) break;
-            result += (d.getAssetsPrice() - strike.getLowStrike()) * transactionsVolume(d.getAssetsPrice());
+            if (isKnockOutCrossedUp(d.getSpotPrice())) break;
+            result += (d.getSpotPrice() - strike.getLowStrike()) * transactionsVolume(d.getSpotPrice());
         }
         return result;
     }

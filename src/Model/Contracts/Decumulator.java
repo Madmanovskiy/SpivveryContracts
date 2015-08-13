@@ -9,13 +9,12 @@ import java.sql.Date;
 @DatabaseTable(tableName = "Contracts")
 public class Decumulator extends BasicContract {
 
-    public Decumulator(){
+    public Decumulator() {
 
     }
 
-    public Decumulator( Bank bank, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
-                       double higherStrikeLevel, double knockOutLevel, Strike strike) {
-        super(bank, ContractsType.DEC, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef, strike);
+    public Decumulator(Bank bank, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef) {
+        super(bank, ContractsType.DEC, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef);
     }
 
     public boolean isStrikeCrossedUp(double currentPrice) {
@@ -35,8 +34,8 @@ public class Decumulator extends BasicContract {
     public double calculationResult() {
         double result = 0d;
         for (Deal d : getDeals()){
-            if (isKnockOutCrossedUp(d.getAssetsPrice())) break;
-            result += (strike.getHighStrike() - d.getAssetsPrice()) * transactionsVolume(d.getAssetsPrice());
+            if (isKnockOutCrossedUp(d.getSpotPrice())) break;
+            result += (strike.getHighStrike() - d.getSpotPrice()) * transactionsVolume(d.getSpotPrice());
         }
         return result;
     }

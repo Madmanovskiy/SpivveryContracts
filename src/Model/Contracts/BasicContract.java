@@ -3,13 +3,14 @@ package Model.Contracts;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
+import com.j256.ormlite.table.DatabaseTable;
 
 import java.sql.Date;
 
-
+@DatabaseTable(tableName = "Contracts")
 public abstract class BasicContract {
     @DatabaseField(id = true, generatedId = false, columnName = "contract_id")
-    protected String contractID;
+    protected String contractId;
     @DatabaseField
     protected String bank;
     @DatabaseField(columnName = "type")
@@ -18,11 +19,11 @@ public abstract class BasicContract {
     protected long dateStart;
     @DatabaseField
     protected long dateFinish;
-    @DatabaseField(columnName = "buy")
+    @DatabaseField
     protected String buyAsset;
-    @DatabaseField(columnName = "sell")
+    @DatabaseField
     protected String sellAsset;
-    @DatabaseField(columnName = "value")
+    @DatabaseField
     protected double assetValue;
     @DatabaseField
     protected int leverage;
@@ -40,7 +41,7 @@ public abstract class BasicContract {
 
     }
 
-    public BasicContract(Bank bank, ContractsType contractsType, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef, Strike strike) {
+    public BasicContract(Bank bank, ContractsType contractsType, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef) {
         this.bank = bank.toString();
         this.contractsType = contractsType.toString();
         this.dateStart = dateStart.getTime();
@@ -50,16 +51,19 @@ public abstract class BasicContract {
         this.assetValue = assetValue;
         this.leverage = leverage;
         this.spotRef = spotRef;
-        this.contractID = bank.toString() +
+
+        int tempDay = dateStart.toLocalDate().getDayOfMonth();
+        int tempMonth = dateStart.toLocalDate().getMonthValue();
+
+        this.contractId = bank.toString() +
                 contractsType.toString() +
                 buyAsset.toString() +
                 sellAsset.toString() +
-                dateStart.toLocalDate().getDayOfMonth() +
-                dateStart.toLocalDate().getMonthValue() +
+                (tempDay < 10 ? ("0" + tempDay) : tempDay) +
+                (tempMonth < 10 ? ("0" + tempMonth) : tempMonth) +
                 dateStart.toLocalDate().getYear();
 //        +OPTIONAL 1 - 2 PARAMETERS;
         isClose = false;
-        this.strike = strike;
     }
 
 
@@ -87,12 +91,12 @@ public abstract class BasicContract {
         this.buyAsset = buyAsset;
     }
 
-    public String getContractID() {
-        return contractID;
+    public String getContractId() {
+        return contractId;
     }
 
-    public void setContractID(String contractID) {
-        this.contractID = contractID;
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
     }
 
     public String getContractsType() {
@@ -157,6 +161,14 @@ public abstract class BasicContract {
 
     public void setSpotRef(double spotRef) {
         this.spotRef = spotRef;
+    }
+
+    public Strike getStrike() {
+        return strike;
+    }
+
+    public void setStrike(Strike strike) {
+        this.strike = strike;
     }
 
     public boolean IsContractExpired() {

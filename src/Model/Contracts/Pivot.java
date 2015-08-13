@@ -12,9 +12,8 @@ public class Pivot extends BasicContract {
 
     }
 
-    public Pivot(Bank bank, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
-                 double higherStrikeLevel, double lowerStrikeLevel, double pivotPrice, Strike strike) {
-        super(bank, ContractsType.PIV, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef, strike);
+    public Pivot(Bank bank, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef) {
+        super(bank, ContractsType.PIV, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef);
     }
 
     public boolean isStrikeCrossedDown(double currentPrice) {
@@ -35,7 +34,7 @@ public class Pivot extends BasicContract {
     public double calculationResult() {
         double result = 0d;
         for (Deal d : getDeals()){
-            double pr = d.getAssetsPrice();
+            double pr = d.getSpotPrice();
             if (pr >= strike.getPivot()) {
                 result += transactionsVolume(pr) * (strike.getHighStrike() - pr);
             } else {

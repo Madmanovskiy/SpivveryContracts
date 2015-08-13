@@ -8,35 +8,35 @@ import java.sql.Date;
 
 @DatabaseTable (tableName = "deals")
 public class Deal {
-    @DatabaseField(generatedId = true)
+    @DatabaseField(generatedId = true, columnName = "deal_id")
     protected   int id;
-    @DatabaseField(columnName = "contractsID", foreign = true)
+    @DatabaseField(columnName = "contract_id", foreign = true)
     protected  BasicContract basicContract;
     @DatabaseField
     protected  long dealDate;
     @DatabaseField
     protected  String dealType;
-    @DatabaseField(columnName = "dealValue")
-    protected  double assetsPrice;
-    @DatabaseField(columnName = "dealVolume")
+    @DatabaseField
+    protected  double spotPrice;
+    @DatabaseField
     protected  double volume;
 
     public Deal(){
 
     }
 
-    public Deal(int id, BasicContract basicContract, Date dealDate, DealsType dealType, double assetsPrice, double volume) {
+    public Deal(int id, BasicContract basicContract, Date dealDate, DealsType dealType, double spotPrice, double volume) {
         this.id = id;
         this.basicContract = basicContract;
         this.dealDate = dealDate.getTime();
         this.dealType = dealType.toString();
-        this.assetsPrice = assetsPrice;
+        this.spotPrice = spotPrice;
         this.volume = volume;
     }
 
 
-    public double getAssetsPrice() {
-        return assetsPrice;
+    public double getSpotPrice() {
+        return spotPrice;
     }
 
     public BasicContract getBasicContract() {
@@ -59,8 +59,8 @@ public class Deal {
         return volume;
     }
 
-    public void setAssetsPrice(double assetsPrice) {
-        this.assetsPrice = assetsPrice;
+    public void setSpotPrice(double spotPrice) {
+        this.spotPrice = spotPrice;
     }
 
     public void setBasicContract(BasicContract basicContract) {
