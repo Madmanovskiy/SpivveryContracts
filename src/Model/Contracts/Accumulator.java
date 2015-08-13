@@ -1,25 +1,28 @@
 package Model.Contracts;
 
 
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.sql.Date;
 
+@DatabaseTable(tableName = "Contracts")
 public class Accumulator extends BasicContract {
-    private final double lowerStrikeLevel;
-    private final double knockOutLevel;
 
-    public Accumulator(int id,Bank bank, ContractsType contractsType, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
-                       double lowerStrikeLevel, double knockOutLevel) {
-        super(id, bank, contractsType, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef);
-        this.lowerStrikeLevel = lowerStrikeLevel;
-        this.knockOutLevel = knockOutLevel;
+    public Accumulator(){
+
+    }
+
+    public Accumulator(int id, Bank bank, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
+                       double lowerStrikeLevel, double knockOutLevel, Strike strike) {
+        super(bank, ContractsType.ACC, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef, strike);
     }
 
     public boolean isStrikeCrossedDown(double currentPrice) {
-        return lowerStrikeLevel > currentPrice;
+        return strike.getLowStrike() > currentPrice;
     }
 
     public boolean isKnockOutCrossedUp(double currentPrice) {
-        return knockOutLevel <= currentPrice;
+        return strike.getKnockout() <= currentPrice;
     }
 
     @Override
@@ -32,7 +35,7 @@ public class Accumulator extends BasicContract {
         double result = 0d;
         for (Deal d : getDeals()){
             if (isKnockOutCrossedUp(d.getAssetsPrice())) break;
-            result += (d.getAssetsPrice() - lowerStrikeLevel) * transactionsVolume(d.getAssetsPrice());
+            result += (d.getAssetsPrice() - strike.getLowStrike()) * transactionsVolume(d.getAssetsPrice());
         }
         return result;
     }

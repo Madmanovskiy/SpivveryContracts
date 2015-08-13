@@ -5,21 +5,21 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.sql.Date;
-//SQLitestudio need
+
 @DatabaseTable (tableName = "deals")
 public class Deal {
     @DatabaseField(generatedId = true)
-    private  int id;
+    protected   int id;
     @DatabaseField(columnName = "contractsID", foreign = true)
-    private  BasicContract basicContract;
+    protected  BasicContract basicContract;
     @DatabaseField
-    private  Date dealDate;
+    protected  long dealDate;
     @DatabaseField
-    private  String dealType;
+    protected  String dealType;
     @DatabaseField(columnName = "dealValue")
-    private  double assetsPrice;
+    protected  double assetsPrice;
     @DatabaseField(columnName = "dealVolume")
-    private  double volume;
+    protected  double volume;
 
     public Deal(){
 
@@ -28,7 +28,7 @@ public class Deal {
     public Deal(int id, BasicContract basicContract, Date dealDate, DealsType dealType, double assetsPrice, double volume) {
         this.id = id;
         this.basicContract = basicContract;
-        this.dealDate = dealDate;
+        this.dealDate = dealDate.getTime();
         this.dealType = dealType.toString();
         this.assetsPrice = assetsPrice;
         this.volume = volume;
@@ -43,7 +43,7 @@ public class Deal {
         return basicContract;
     }
 
-    public Date getDealDate() {
+    public long getDealDate() {
         return dealDate;
     }
 
@@ -57,6 +57,30 @@ public class Deal {
 
     public double getVolume() {
         return volume;
+    }
+
+    public void setAssetsPrice(double assetsPrice) {
+        this.assetsPrice = assetsPrice;
+    }
+
+    public void setBasicContract(BasicContract basicContract) {
+        this.basicContract = basicContract;
+    }
+
+    public void setDealDate(Date dealDate) {
+        this.dealDate = dealDate.getTime();
+    }
+
+    public void setDealType(String dealType) {
+        this.dealType = dealType;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setVolume(double volume) {
+        this.volume = volume;
     }
 
     public enum DealsType {

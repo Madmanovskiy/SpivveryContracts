@@ -31,14 +31,14 @@ public class BasicContractsService {
 
 
     public static void main(String[] args) {
-        BasicContract ac = new BasicContract(0, BasicContract.Bank.BNP, BasicContract.ContractsType.ACC, new Date(System.currentTimeMillis()), Date.valueOf("2015-10-21"),
-                BasicContract.Assets.CHF, BasicContract.Assets.EUR,500000d, 2, 1.5034d);
+//        BasicContract ac = new BasicContract(0, BasicContract.Bank.BNP, BasicContract.ContractsType.ACC, new Date(System.currentTimeMillis()), Date.valueOf("2015-10-21"),
+//                BasicContract.Assets.CHF, BasicContract.Assets.EUR,500000d, 2, 1.5034d);
 
 //        Deal deal1 = new Deal(0,ac,Date.valueOf("2015-08-30"), Deal.DealsType.BUY, 1.5060d, 500000d);
 
         try{
             BasicContractsService bcs = new BasicContractsService();
-            bcs.addContractToDB(ac);
+//            bcs.addContractToDB(ac);
         } catch (SQLException e) {
             e.printStackTrace();
         }

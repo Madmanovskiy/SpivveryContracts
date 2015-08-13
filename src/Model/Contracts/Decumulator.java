@@ -1,26 +1,29 @@
 package Model.Contracts;
 
 
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.sql.Date;
-import java.time.LocalDate;
 
+
+@DatabaseTable(tableName = "Contracts")
 public class Decumulator extends BasicContract {
-    private final double higherStrikeLevel;
-    private final double knockOutLevel;
 
-    public Decumulator(int id, Bank bank, ContractsType contractsType, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
-                       double higherStrikeLevel, double knockOutLevel) {
-        super(id, bank, contractsType, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef);
-        this.higherStrikeLevel = higherStrikeLevel;
-        this.knockOutLevel = knockOutLevel;
+    public Decumulator(){
+
+    }
+
+    public Decumulator( Bank bank, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
+                       double higherStrikeLevel, double knockOutLevel, Strike strike) {
+        super(bank, ContractsType.DEC, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef, strike);
     }
 
     public boolean isStrikeCrossedUp(double currentPrice) {
-        return higherStrikeLevel < currentPrice;
+        return strike.getHighStrike() < currentPrice;
     }
 
     public boolean isKnockOutCrossedUp(double currentPrice) {
-        return knockOutLevel >= currentPrice;
+        return strike.getKnockout() >= currentPrice;
     }
 
     @Override
@@ -33,7 +36,7 @@ public class Decumulator extends BasicContract {
         double result = 0d;
         for (Deal d : getDeals()){
             if (isKnockOutCrossedUp(d.getAssetsPrice())) break;
-            result += (higherStrikeLevel - d.getAssetsPrice()) * transactionsVolume(d.getAssetsPrice());
+            result += (strike.getHighStrike() - d.getAssetsPrice()) * transactionsVolume(d.getAssetsPrice());
         }
         return result;
     }

@@ -1,29 +1,28 @@
 package Model.Contracts;
 
 
-import java.sql.Date;
-import java.time.LocalDate;
+import com.j256.ormlite.table.DatabaseTable;
 
+import java.sql.Date;
+
+@DatabaseTable(tableName = "Contracts")
 public class Pivot extends BasicContract {
 
-    private final double higherStrikeLevel;
-    private final double lowerStrikeLevel;
-    private final double pivotPrice;
+    public Pivot(){
 
-    public Pivot(int id,Bank bank, ContractsType contractsType, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
-                 double higherStrikeLevel, double lowerStrikeLevel, double pivotPrice) {
-        super(id, bank, contractsType, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef);
-        this.higherStrikeLevel = higherStrikeLevel;
-        this.lowerStrikeLevel = lowerStrikeLevel;
-        this.pivotPrice = pivotPrice;
+    }
+
+    public Pivot(Bank bank, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
+                 double higherStrikeLevel, double lowerStrikeLevel, double pivotPrice, Strike strike) {
+        super(bank, ContractsType.PIV, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef, strike);
     }
 
     public boolean isStrikeCrossedDown(double currentPrice) {
-        return lowerStrikeLevel > currentPrice;
+        return strike.getLowStrike() > currentPrice;
     }
 
     public boolean isStrikeCrossedUp(double currentPrice) {
-        return higherStrikeLevel < currentPrice;
+        return strike.getHighStrike()  < currentPrice;
     }
 
     @Override
@@ -37,10 +36,10 @@ public class Pivot extends BasicContract {
         double result = 0d;
         for (Deal d : getDeals()){
             double pr = d.getAssetsPrice();
-            if (pr >= pivotPrice) {
-                result += transactionsVolume(pr) * (higherStrikeLevel - pr);
+            if (pr >= strike.getPivot()) {
+                result += transactionsVolume(pr) * (strike.getHighStrike() - pr);
             } else {
-                result += transactionsVolume(pr) * (pr - lowerStrikeLevel);
+                result += transactionsVolume(pr) * (pr - strike.getLowStrike());
             }
         }
         return result;

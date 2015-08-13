@@ -3,52 +3,48 @@ package Model.Contracts;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
-import com.j256.ormlite.table.DatabaseTable;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 
-@DatabaseTable(tableName = "Contracts")
-public class BasicContract {
-    @DatabaseField(generatedId = true)
-    private int id;
-    @DatabaseField(columnName = "contractID")
-    private String contractID;
+public abstract class BasicContract {
+    @DatabaseField(id = true, generatedId = false, columnName = "contract_id")
+    protected String contractID;
     @DatabaseField
-    private String bank;
-    @DatabaseField (columnName = "contractsType")
-    private String contractsType;
+    protected String bank;
+    @DatabaseField(columnName = "type")
+    protected String contractsType;
     @DatabaseField
-    private Date dateStart;
+    protected long dateStart;
     @DatabaseField
-    private Date dateFinish;
+    protected long dateFinish;
     @DatabaseField(columnName = "buy")
-    private String buyAsset;
+    protected String buyAsset;
     @DatabaseField(columnName = "sell")
-    private String sellAsset;
+    protected String sellAsset;
     @DatabaseField(columnName = "value")
-    private double assetValue;
+    protected double assetValue;
     @DatabaseField
-    private int leverage;
+    protected int leverage;
     @DatabaseField
-    private double spotRef;
+    protected double spotRef;
     @DatabaseField
-    private boolean isClose;
+    protected boolean isClose;
+
+    protected Strike strike;
 
     @ForeignCollectionField(eager = true)
-    private ForeignCollection<Deal> deals;
+    protected ForeignCollection<Deal> deals;
 
     public BasicContract() {
 
     }
 
-    public BasicContract(int id, Bank bank, ContractsType contractsType, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef) {
-        this.id = id;
+    public BasicContract(Bank bank, ContractsType contractsType, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef, Strike strike) {
         this.bank = bank.toString();
         this.contractsType = contractsType.toString();
-        this.dateStart = dateStart;
-        this.dateFinish = dateFinish;
+        this.dateStart = dateStart.getTime();
+        this.dateFinish = dateFinish.getTime();
         this.buyAsset = buyAsset.toString();
         this.sellAsset = sellAsset.toString();
         this.assetValue = assetValue;
@@ -63,6 +59,7 @@ public class BasicContract {
                 dateStart.toLocalDate().getYear();
 //        +OPTIONAL 1 - 2 PARAMETERS;
         isClose = false;
+        this.strike = strike;
     }
 
 
@@ -70,80 +67,121 @@ public class BasicContract {
         return assetValue;
     }
 
+    public void setAssetValue(double assetValue) {
+        this.assetValue = assetValue;
+    }
+
     public String getBank() {
         return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
     }
 
     public String getBuyAsset() {
         return buyAsset;
     }
 
-    public String getContractsType() {
-        return contractsType;
-    }
-
-    public Date getDateFinish() {
-        return dateFinish;
-    }
-
-    public Date getDateStart() {
-        return dateStart;
-    }
-
-    public ForeignCollection<Deal> getDeals() {
-        return deals;
-    }
-
-    public int getId() {
-        return id;
+    public void setBuyAsset(String buyAsset) {
+        this.buyAsset = buyAsset;
     }
 
     public String getContractID() {
         return contractID;
     }
 
+    public void setContractID(String contractID) {
+        this.contractID = contractID;
+    }
+
+    public String getContractsType() {
+        return contractsType;
+    }
+
+    public void setContractsType(String contractsType) {
+        this.contractsType = contractsType;
+    }
+
+    public long getDateFinish() {
+        return dateFinish;
+    }
+
+    public void setDateFinish(long dateFinish) {
+        this.dateFinish = dateFinish;
+    }
+
+    public long getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(long dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public ForeignCollection<Deal> getDeals() {
+        return deals;
+    }
+
+    public void setDeals(ForeignCollection<Deal> deals) {
+        this.deals = deals;
+    }
+
     public boolean isClose() {
         return isClose;
+    }
+
+    public void setIsClose(boolean isClose) {
+        this.isClose = isClose;
     }
 
     public int getLeverage() {
         return leverage;
     }
 
-    public double getSpotRef() {
-        return spotRef;
-    }
-
-    public boolean IsContractExpired() {
-        return getRemainingWeeks(LocalDate.now()) < 0;
-    }
-
-    public int getRemainingWeeks(LocalDate fromDate) {
-        return (dateFinish.toLocalDate().getDayOfYear() - fromDate.getDayOfYear()) / 7;
+    public void setLeverage(int leverage) {
+        this.leverage = leverage;
     }
 
     public String getSellAsset() {
         return sellAsset;
     }
 
-    public double calculationResult(){
-        throw new UnsupportedOperationException();
+    public void setSellAsset(String sellAsset) {
+        this.sellAsset = sellAsset;
     }
 
-    public double transactionsVolume(double currentPrice){
-        throw new UnsupportedOperationException();
+    public double getSpotRef() {
+        return spotRef;
     }
+
+    public void setSpotRef(double spotRef) {
+        this.spotRef = spotRef;
+    }
+
+    public boolean IsContractExpired() {
+        return getRemainingWeeks(new Date(new java.util.Date().getTime())) < 0;
+    }
+
+    public int getRemainingWeeks(Date fromDate) {
+        return (new Date(dateFinish).toLocalDate().getDayOfYear() - fromDate.toLocalDate().getDayOfYear()) / 7;
+    }
+
+    public abstract double calculationResult();
+
+    public abstract double transactionsVolume(double currentPrice);
+
 
     public enum Bank {
-        UBS,
+        UBS_,
         HSBC,
-        CS,
-        BNP,
-        GSB
+        CS__,
+        BNP_,
+        GSB_
     }
 
     public enum ContractsType {
-        DIS,
+        DEC,
         ACC,
         PIV,
         SPT,
@@ -165,3 +203,6 @@ public class BasicContract {
     }
 
 }
+
+
+
