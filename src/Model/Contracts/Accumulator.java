@@ -9,9 +9,9 @@ import java.sql.Date;
 
 @DatabaseTable(tableName = "Contracts")
 public class Accumulator extends BasicContract {
-    @DatabaseField
+    @DatabaseField(columnName = "lowstrike")
     double lowStrike;
-    @DatabaseField
+    @DatabaseField(columnName = "pivot")
     double knockout;
 
     public Accumulator() {
@@ -21,6 +21,7 @@ public class Accumulator extends BasicContract {
     public Accumulator(String bank, Date dateStart, Date dateFinish, String buyAsset, String sellAsset, double assetValue, int leverage, double spotRef,
                        double lowStrike, double knockout) {
         this.setBank(bank);
+        this.setContractsType("ACC");
         this.setDateStart(dateStart);
         this.setDateFinish(dateFinish);
         this.setBuyAsset(buyAsset);
@@ -30,9 +31,7 @@ public class Accumulator extends BasicContract {
         this.setSpotRef(spotRef);
         this.setLowStrike(lowStrike);
         this.setKnockout(knockout);
-        this.setHighStrike(0);
-        this.setPivot(0);
-
+        this.setContractId();
     }
 
     public boolean isStrikeCrossedDown(double currentPrice) {
@@ -58,24 +57,25 @@ public class Accumulator extends BasicContract {
         return result;
     }
 
-    @Override
     public double getKnockout() {
         return knockout;
     }
 
-    @Override
-    public void setKnockout(double knockout) {
-        this.knockout = knockout;
-    }
-
-    @Override
     public double getLowStrike() {
         return lowStrike;
     }
 
-    @Override
+    public void setKnockout(double knockout) {
+        this.knockout = knockout;
+    }
+
     public void setLowStrike(double lowStrike) {
         this.lowStrike = lowStrike;
+    }
+
+    @Override
+    public void setContractId() {
+        this.contractId = generatedId();
     }
 
     @Override
@@ -99,11 +99,6 @@ public class Accumulator extends BasicContract {
     }
 
     @Override
-    public void setContractId(String contractId) {
-        this.contractId = contractId;
-    }
-
-    @Override
     public void setContractsType(String contractsType) {
         this.contractsType = contractsType;
     }
@@ -123,19 +118,10 @@ public class Accumulator extends BasicContract {
         this.deals = deals;
     }
 
-    @Override
-    public void setHighStrike(double highStrike) {
-        this.highStrike = highStrike;
-    }
 
     @Override
     public void setIsClose(boolean isClose) {
         this.isClose = isClose;
-    }
-
-    @Override
-    public void setPivot(double pivot) {
-        this.pivot = pivot;
     }
 
     @Override

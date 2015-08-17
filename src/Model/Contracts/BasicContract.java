@@ -9,7 +9,7 @@ import java.sql.Date;
 
 @DatabaseTable(tableName = "Contracts")
 public abstract class BasicContract {
-    @DatabaseField(id = true, generatedId = false, columnName = "contract_id")
+    @DatabaseField(id = true,  columnName = "contract_id")
     protected String contractId;
     @DatabaseField
     protected String bank;
@@ -31,14 +31,6 @@ public abstract class BasicContract {
     protected double spotRef;
     @DatabaseField
     protected boolean isClose;
-    @DatabaseField
-    protected double pivot;
-    @DatabaseField
-    protected double lowStrike;
-    @DatabaseField
-    protected double highStrike;
-    @DatabaseField
-    protected double knockout;
 
     @ForeignCollectionField(eager = true)
     protected ForeignCollection<Deal> deals;
@@ -88,28 +80,12 @@ public abstract class BasicContract {
         return deals;
     }
 
-    public double getHighStrike() {
-        return highStrike;
-    }
-
     public boolean isClose() {
         return isClose;
     }
 
-    public double getKnockout() {
-        return knockout;
-    }
-
     public int getLeverage() {
         return leverage;
-    }
-
-    public double getLowStrike() {
-        return lowStrike;
-    }
-
-    public double getPivot() {
-        return pivot;
     }
 
     public String getSellAsset() {
@@ -120,13 +96,13 @@ public abstract class BasicContract {
         return spotRef;
     }
 
+    public abstract void setContractId();
+
     public abstract void setAssetValue(double assetValue);
 
     public abstract void setBank(String bank);
 
     public abstract void setBuyAsset(String buyAsset);
-
-    public abstract void setContractId(String contractId);
 
     public abstract void setContractsType(String contractsType);
 
@@ -136,17 +112,9 @@ public abstract class BasicContract {
 
     public abstract void setDeals(ForeignCollection<Deal> deals);
 
-    public abstract void setHighStrike(double highStrike);
-
     public abstract void setIsClose(boolean isClose);
 
-    public abstract void setKnockout(double knockout);
-
     public abstract void setLeverage(int leverage);
-
-    public abstract void setLowStrike(double lowStrike);
-
-    public abstract void setPivot(double pivot);
 
     public abstract void setSellAsset(String sellAsset);
 
@@ -164,6 +132,22 @@ public abstract class BasicContract {
 
     public abstract double transactionsVolume(double currentPrice);
 
+    @Override
+    public String toString() {
+        return "BasicContract{" +
+                "contractId='" + contractId + '\'' +
+                ", bank='" + bank + '\'' +
+                ", contractsType='" + contractsType + '\'' +
+                ", dateStart=" + dateStart +
+                ", dateFinish=" + dateFinish +
+                ", buyAsset='" + buyAsset + '\'' +
+                ", sellAsset='" + sellAsset + '\'' +
+                ", assetValue=" + assetValue +
+                ", leverage=" + leverage +
+                ", spotRef=" + spotRef +
+                ", isClose=" + isClose +
+                '}';
+    }
 }
 
 

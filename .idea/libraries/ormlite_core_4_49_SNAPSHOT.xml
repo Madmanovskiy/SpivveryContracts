@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="ormlite-core-4.49-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../ormlite-core-4.49-SNAPSHOT.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../ormlite-jdbc-4.49-SNAPSHOT.jar!/" />
+      <root url="jar://D:/lib/ormlite-core-4.49-SNAPSHOT.jar!/" />
+      <root url="jar://D:/lib/ormlite-jdbc-4.49-SNAPSHOT.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

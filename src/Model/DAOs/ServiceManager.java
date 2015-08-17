@@ -30,7 +30,7 @@ public final class ServiceManager {
 
     private ServiceManager(String dbDistanation) {
         this.url = "jdbc:sqlite:" + dbDistanation;
-        try{
+        try {
             source = new JdbcConnectionSource(url);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -50,7 +50,7 @@ public final class ServiceManager {
 
     public BasicContractDAO getBasicContractDAO() throws SQLException {
         if (bcDAO == null) {
-            bcDAO = new BasicContractDAO(source, BasicContract.class);
+            bcDAO = new BasicContractDAO(source, Accumulator.class);
         }
 
         return bcDAO;
@@ -66,10 +66,10 @@ public final class ServiceManager {
     }
 
     public static void main(String[] args) throws SQLException {
-//        Accumulator ac1 = new Accumulator(BasicContract.Bank.BNP_, Date.valueOf("2015-08-25"), Date.valueOf("2016-08-25"), BasicContract.Assets.EUR, BasicContract.Assets.USD, 500000d, 2, 1.3345d,
-//                1.33d, 1.50d);
+        Accumulator ac1 = new Accumulator("BNP_", Date.valueOf("2015-08-25"), Date.valueOf("2016-08-25"), "EUR", "USD", 500000d, 2, 1.3345d,
+                1.33d, 1.50d);
 //
-//        Pivot piv1 = new Pivot(BasicContract.Bank.CS__, Date.valueOf("2015-10-25"), Date.valueOf("2016-10-25"), BasicContract.Assets.JPY, BasicContract.Assets.XAU, 10000d, 2, 10.2d,
+//        Pivot piv1 = new Pivot("CS__", Date.valueOf("2015-10-25"), Date.valueOf("2016-10-25"), "JPY", "XAU", 10000d, 2, 10.2d,
 //                10.5d, 8.1d, 13.2d);
 //
         ServiceManager sm = getInstance("spivverydb");
@@ -79,35 +79,26 @@ public final class ServiceManager {
 //        BCdao.addContractToDB(ac1);
 //        BCdao.addContractToDB(piv1);
 //
-//        Ddao.addDealToDB(new Deal(0, ac1, Date.valueOf("2015-08-31"), Deal.DealsType.BUY, 1.3356d, ac1.transactionsVolume(1.3356d)));
-//        Ddao.addDealToDB(new Deal(0, ac1, Date.valueOf("2015-09-07"), Deal.DealsType.BUY, 1.3366d, ac1.transactionsVolume(1.3366d)));
-//        Ddao.addDealToDB(new Deal(0, ac1, Date.valueOf("2015-09-14"), Deal.DealsType.BUY, 1.3396d, ac1.transactionsVolume(1.3396d)));
-//        Ddao.addDealToDB(new Deal(0, ac1, Date.valueOf("2015-09-21"), Deal.DealsType.BUY, 1.3416d, ac1.transactionsVolume(1.3416d)));
+//        Ddao.addDealToDB(new Deal(ac1, Date.valueOf("2015-08-31"), "B", 1.3356d, ac1.transactionsVolume(1.3356d)));
+//        Ddao.addDealToDB(new Deal(ac1, Date.valueOf("2015-09-07"), "B", 1.3366d, ac1.transactionsVolume(1.3366d)));
+//        Ddao.addDealToDB(new Deal(ac1, Date.valueOf("2015-09-14"), "B", 1.3396d, ac1.transactionsVolume(1.3396d)));
+//        Ddao.addDealToDB(new Deal(ac1, Date.valueOf("2015-09-21"), "B", 1.3416d, ac1.transactionsVolume(1.3416d)));
 //
-//        Ddao.addDealToDB(new Deal(0, piv1, Date.valueOf("2015-11-01"), Deal.DealsType.SELL, 11d, ac1.transactionsVolume(11d)));
-//        Ddao.addDealToDB(new Deal(0, piv1, Date.valueOf("2015-11-08"), Deal.DealsType.SELL, 12d, ac1.transactionsVolume(12d)));
-//        Ddao.addDealToDB(new Deal(0, piv1, Date.valueOf("2015-11-15"), Deal.DealsType.SELL, 15d, ac1.transactionsVolume(15d)));
-//        Ddao.addDealToDB(new Deal(0, piv1, Date.valueOf("2015-11-22"), Deal.DealsType.SELL, 18d, ac1.transactionsVolume(18d)));
+//        Ddao.addDealToDB(new Deal(piv1, Date.valueOf("2015-11-01"), "S", 11d, ac1.transactionsVolume(11d)));
+//        Ddao.addDealToDB(new Deal(piv1, Date.valueOf("2015-11-08"), "S", 12d, ac1.transactionsVolume(12d)));
+//        Ddao.addDealToDB(new Deal(piv1, Date.valueOf("2015-11-15"), "S", 15d, ac1.transactionsVolume(15d)));
+//        Ddao.addDealToDB(new Deal(piv1, Date.valueOf("2015-11-22"), "S", 18d, ac1.transactionsVolume(18d)));
 
 
-        GenericRawResults<String[]> rawResults =
-                BCdao.queryRaw(
-                        "select * from Contracts ");
-
-        for (String[] arr : rawResults){
-            for (String s : arr){
-                System.out.print(s + " ");
-            }
-            System.out.println();
-        }
-
-        List<BasicContract> list = BCdao.getAllBasicContracts();
-        for(BasicContract b : list){
+        List<Accumulator> list = BCdao.queryForEq("contract_id", "BNP_ACCEURUSD25082015");
+        for (Accumulator b : list) {
             System.out.println(b);
+            for(Deal d : b.getDeals()){
+                System.out.println(d);
+            }
         }
-
 //        List<Deal> list1 = Ddao.getAllDeal();
-//        for (Deal d :list1){
+//        for (Deal d : list1) {
 //            System.out.println(d);
 //        }
 

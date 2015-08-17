@@ -2,8 +2,6 @@ package Conrtoller;
 
 import Model.Contracts.Accumulator;
 import Model.Contracts.BasicContract;
-import Model.Contracts.Pivot;
-import Model.Contracts.Strike;
 import Model.DAOs.BasicContractDAO;
 import Model.DAOs.ServiceManager;
 import javafx.collections.FXCollections;
@@ -78,13 +76,6 @@ public class RealContractsController {
     }
 
     public void getData() {
-        ServiceManager sm = ServiceManager.getInstance("spivverydb");
-        try{
-            List<BasicContract> basicContracts = sm.getBasicContractDAO().getAllBasicContracts();
-            basicContractsData.addAll(basicContracts);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 }

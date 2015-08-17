@@ -11,9 +11,9 @@ public class Deal {
     @DatabaseField(columnName = "deal_id", generatedId = true)
     protected int id;
     @DatabaseField(columnName = "contract_id", foreign = true)
-    protected BasicContract basicContract;
+    protected Accumulator basicContract;
     @DatabaseField
-    protected long dealDate;
+    protected Date dealDate;
     @DatabaseField
     protected String dealType;
     @DatabaseField
@@ -25,25 +25,23 @@ public class Deal {
 
     }
 
-    public Deal(int id, BasicContract basicContract, Date dealDate, DealsType dealType, double spotPrice, double volume) {
-        this.id = id;
+    public Deal(Accumulator basicContract, Date dealDate, String dealType, double spotPrice, double volume) {
         this.basicContract = basicContract;
-        this.dealDate = dealDate.getTime();
-        this.dealType = dealType.toString();
+        this.dealDate = dealDate;
+        this.dealType = dealType;
         this.spotPrice = spotPrice;
         this.volume = volume;
     }
 
-
-    public double getSpotPrice() {
-        return spotPrice;
+    public int getId() {
+        return id;
     }
 
     public BasicContract getBasicContract() {
         return basicContract;
     }
 
-    public long getDealDate() {
+    public Date getDealDate() {
         return dealDate;
     }
 
@@ -51,40 +49,48 @@ public class Deal {
         return dealType;
     }
 
-    public int getId() {
-        return id;
+    public double getSpotPrice() {
+        return spotPrice;
     }
 
     public double getVolume() {
         return volume;
     }
 
-    public void setSpotPrice(double spotPrice) {
-        this.spotPrice = spotPrice;
+
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setBasicContract(BasicContract basicContract) {
+    public void setBasicContract(Accumulator basicContract) {
         this.basicContract = basicContract;
     }
 
     public void setDealDate(Date dealDate) {
-        this.dealDate = dealDate.getTime();
+        this.dealDate = dealDate;
     }
 
     public void setDealType(String dealType) {
         this.dealType = dealType;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setSpotPrice(double spotPrice) {
+        this.spotPrice = spotPrice;
     }
 
     public void setVolume(double volume) {
         this.volume = volume;
     }
 
-    public enum DealsType {
-        BUY,
-        SELL
+    @Override
+    public String toString() {
+        return "Deal{" +
+                "id=" + id +
+                ", basicContract=" + basicContract +
+                ", dealDate=" + dealDate +
+                ", dealType='" + dealType + '\'' +
+                ", spotPrice=" + spotPrice +
+                ", volume=" + volume +
+                '}';
     }
 }
