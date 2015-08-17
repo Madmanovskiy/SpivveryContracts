@@ -93,7 +93,11 @@ public final class ServiceManager {
         List<Accumulator> list = BCdao.queryForEq("contract_id", "BNP_ACCEURUSD25082015");
         for (Accumulator b : list) {
             System.out.println(b);
-            for(Deal d : b.getDeals()){
+//            Ddao.addDealToDB(new Deal(b, Date.valueOf("2015-10-01"), "S", 1.3416d, ac1.transactionsVolume(1.3416d)));
+//            Ddao.addDealToDB(new Deal(b, Date.valueOf("2015-11-01"), "S", 1.3416d, ac1.transactionsVolume(1.3416d)));
+
+            List<Deal> deals = Ddao.queryForEq("contract_id", "BNP_ACCEURUSD25082015");
+            for(Deal d : deals){
                 System.out.println(d);
             }
         }
