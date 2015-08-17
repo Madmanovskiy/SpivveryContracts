@@ -4,6 +4,7 @@ import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
+
 import java.sql.Date;
 
 @DatabaseTable(tableName = "Contracts")
@@ -15,9 +16,9 @@ public abstract class BasicContract {
     @DatabaseField(columnName = "type")
     protected String contractsType;
     @DatabaseField
-    protected long dateStart;
+    protected Date dateStart;
     @DatabaseField
-    protected long dateFinish;
+    protected Date dateFinish;
     @DatabaseField
     protected String buyAsset;
     @DatabaseField
@@ -42,210 +43,126 @@ public abstract class BasicContract {
     @ForeignCollectionField(eager = true)
     protected ForeignCollection<Deal> deals;
 
-    public BasicContract() {
-
-    }
-
-    public BasicContract(Bank bank, ContractsType contractsType, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
-                         double pivot, double lowStrike, double highStrike, double knockout) {
-        this.bank = bank.toString();
-        this.contractsType = contractsType.toString();
-        this.dateStart = dateStart.getTime();
-        this.dateFinish = dateFinish.getTime();
-        this.buyAsset = buyAsset.toString();
-        this.sellAsset = sellAsset.toString();
-        this.assetValue = assetValue;
-        this.leverage = leverage;
-        this.spotRef = spotRef;
-
+    protected String generatedId() {
         int tempDay = dateStart.toLocalDate().getDayOfMonth();
         int tempMonth = dateStart.toLocalDate().getMonthValue();
 
-        this.contractId = bank.toString() +
-                contractsType.toString() +
-                buyAsset.toString() +
-                sellAsset.toString() +
+        return bank +
+                contractsType +
+                buyAsset +
+                sellAsset +
                 (tempDay < 10 ? ("0" + tempDay) : tempDay) +
                 (tempMonth < 10 ? ("0" + tempMonth) : tempMonth) +
                 dateStart.toLocalDate().getYear();
-//        +OPTIONAL 1 - 2 PARAMETERS;
-        isClose = false;
-        this.pivot = pivot;
-        this.lowStrike = lowStrike;
-        this.highStrike = highStrike;
-        this.knockout = knockout;
     }
 
     public double getAssetValue() {
         return assetValue;
     }
 
-    public void setAssetValue(double assetValue) {
-        this.assetValue = assetValue;
-    }
-
     public String getBank() {
         return bank;
-    }
-
-    public void setBank(String bank) {
-        this.bank = bank;
     }
 
     public String getBuyAsset() {
         return buyAsset;
     }
 
-    public void setBuyAsset(String buyAsset) {
-        this.buyAsset = buyAsset;
-    }
-
     public String getContractId() {
         return contractId;
-    }
-
-    public void setContractId(String contractId) {
-        this.contractId = contractId;
     }
 
     public String getContractsType() {
         return contractsType;
     }
 
-    public void setContractsType(String contractsType) {
-        this.contractsType = contractsType;
-    }
-
-    public long getDateFinish() {
+    public Date getDateFinish() {
         return dateFinish;
     }
 
-    public void setDateFinish(long dateFinish) {
-        this.dateFinish = dateFinish;
-    }
-
-    public long getDateStart() {
+    public Date getDateStart() {
         return dateStart;
-    }
-
-    public void setDateStart(long dateStart) {
-        this.dateStart = dateStart;
     }
 
     public ForeignCollection<Deal> getDeals() {
         return deals;
     }
 
-    public void setDeals(ForeignCollection<Deal> deals) {
-        this.deals = deals;
-    }
-
     public double getHighStrike() {
         return highStrike;
-    }
-
-    public void setHighStrike(double highStrike) {
-        this.highStrike = highStrike;
     }
 
     public boolean isClose() {
         return isClose;
     }
 
-    public void setIsClose(boolean isClose) {
-        this.isClose = isClose;
-    }
-
     public double getKnockout() {
         return knockout;
-    }
-
-    public void setKnockout(double knockout) {
-        this.knockout = knockout;
     }
 
     public int getLeverage() {
         return leverage;
     }
 
-    public void setLeverage(int leverage) {
-        this.leverage = leverage;
-    }
-
     public double getLowStrike() {
         return lowStrike;
-    }
-
-    public void setLowStrike(double lowStrike) {
-        this.lowStrike = lowStrike;
     }
 
     public double getPivot() {
         return pivot;
     }
 
-    public void setPivot(double pivot) {
-        this.pivot = pivot;
-    }
-
     public String getSellAsset() {
         return sellAsset;
-    }
-
-    public void setSellAsset(String sellAsset) {
-        this.sellAsset = sellAsset;
     }
 
     public double getSpotRef() {
         return spotRef;
     }
 
-    public void setSpotRef(double spotRef) {
-        this.spotRef = spotRef;
-    }
+    public abstract void setAssetValue(double assetValue);
+
+    public abstract void setBank(String bank);
+
+    public abstract void setBuyAsset(String buyAsset);
+
+    public abstract void setContractId(String contractId);
+
+    public abstract void setContractsType(String contractsType);
+
+    public abstract void setDateFinish(Date dateFinish);
+
+    public abstract void setDateStart(Date dateStart);
+
+    public abstract void setDeals(ForeignCollection<Deal> deals);
+
+    public abstract void setHighStrike(double highStrike);
+
+    public abstract void setIsClose(boolean isClose);
+
+    public abstract void setKnockout(double knockout);
+
+    public abstract void setLeverage(int leverage);
+
+    public abstract void setLowStrike(double lowStrike);
+
+    public abstract void setPivot(double pivot);
+
+    public abstract void setSellAsset(String sellAsset);
+
+    public abstract void setSpotRef(double spotRef);
 
     public boolean IsContractExpired() {
         return getRemainingWeeks(new Date(new java.util.Date().getTime())) < 0;
     }
 
     public int getRemainingWeeks(Date fromDate) {
-        return (new Date(dateFinish).toLocalDate().getDayOfYear() - fromDate.toLocalDate().getDayOfYear()) / 7;
+        return (dateFinish.toLocalDate().getDayOfYear() - fromDate.toLocalDate().getDayOfYear()) / 7;
     }
 
     public abstract double calculationResult();
 
     public abstract double transactionsVolume(double currentPrice);
-
-
-    public enum Bank {
-        UBS_,
-        HSBC,
-        CS__,
-        BNP_,
-        GSB_
-    }
-
-    public enum ContractsType {
-        DEC,
-        ACC,
-        PIV,
-        SPT,
-        FRW,
-        PUT,
-        CAL,
-        STK
-    }
-
-    public enum Assets {
-        XAU,
-        XPD,
-        XPT,
-        USD,
-        EUR,
-        CHF,
-        GBP,
-        JPY
-    }
 
 }
 
