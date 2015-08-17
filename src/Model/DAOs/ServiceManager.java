@@ -1,6 +1,7 @@
 package Model.DAOs;
 
 import Model.Contracts.*;
+import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.dao.GenericRawResults;
@@ -9,7 +10,6 @@ import com.j256.ormlite.support.ConnectionSource;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 //nahuy nujen etot Manager?
@@ -25,8 +25,11 @@ public final class ServiceManager {
     private final String url;
     private ConnectionSource source;
 
-    private ServiceManager(String url) {
-        this.url = url;
+    private BasicContractDAO bcDAO;
+    private DealDAO dealDAO;
+
+    private ServiceManager(String dbDistanation) {
+        this.url = "jdbc:sqlite:" + dbDistanation;
         try{
             source = new JdbcConnectionSource(url);
         } catch (SQLException e) {
@@ -34,69 +37,79 @@ public final class ServiceManager {
         }
     }
 
-    public static synchronized ServiceManager getInstance(String url) {
+    public static ServiceManager getInstance(String url) {
         if (instance == null) {
             instance = new ServiceManager(url);
         }
         return instance;
     }
 
-    public GenericRawResults<String[]> getAllContractsFromDB(){
-        GenericRawResults<String[]> results = null;
-        try{
-            Dao<BasicContract, String> dao = DaoManager.createDao(source, BasicContract.class);
-             results = dao.queryRaw("SELECT * FROM Contracts");
-                int i = 0;
-        }catch (SQLException e){
+    public ConnectionSource getSource() {
+        return source;
+    }
 
+    public BasicContractDAO getBasicContractDAO() throws SQLException {
+        if (bcDAO == null) {
+            bcDAO = new BasicContractDAO(source, BasicContract.class);
         }
 
-        return results;
+        return bcDAO;
     }
 
-    public static void main(String[] args) {
-        List<Deal>deals = new ArrayList<>();
 
-        Accumulator ac1 = new Accumulator(BasicContract.Bank.BNP_, Date.valueOf("2015-08-25"), Date.valueOf("2016-08-25"), BasicContract.Assets.EUR, BasicContract.Assets.USD, 500000d, 2, 1.3345d);
-        ac1.setStrike(new Strike(ac1, 1.3320d, 1.3798d));
+    public DealDAO getDealDAO() throws SQLException {
+        if (dealDAO == null) {
+            dealDAO = new DealDAO(source, Deal.class);
+        }
 
-        Pivot piv1 = new Pivot(BasicContract.Bank.CS__, Date.valueOf("2015-10-25"), Date.valueOf("2016-10-25"), BasicContract.Assets.JPY, BasicContract.Assets.XAU, 10000d, 2, 10.2d);
-        piv1.setStrike(new Strike(piv1, 9d, 11d));
+        return dealDAO;
+    }
 
-        deals.add(new Deal(0, ac1, Date.valueOf("2015-08-31"), Deal.DealsType.BUY, 1.3356d, ac1.transactionsVolume(1.3356d)));
-        deals.add(new Deal(0, ac1, Date.valueOf("2015-09-07"), Deal.DealsType.BUY, 1.3366d, ac1.transactionsVolume(1.3366d)));
-        deals.add(new Deal(0, ac1, Date.valueOf("2015-09-14"), Deal.DealsType.BUY, 1.3396d, ac1.transactionsVolume(1.3396d)));
-        deals.add(new Deal(0, ac1, Date.valueOf("2015-09-21"), Deal.DealsType.BUY, 1.3416d, ac1.transactionsVolume(1.3416d)));
+    public static void main(String[] args) throws SQLException {
+//        Accumulator ac1 = new Accumulator(BasicContract.Bank.BNP_, Date.valueOf("2015-08-25"), Date.valueOf("2016-08-25"), BasicContract.Assets.EUR, BasicContract.Assets.USD, 500000d, 2, 1.3345d,
+//                1.33d, 1.50d);
+//
+//        Pivot piv1 = new Pivot(BasicContract.Bank.CS__, Date.valueOf("2015-10-25"), Date.valueOf("2016-10-25"), BasicContract.Assets.JPY, BasicContract.Assets.XAU, 10000d, 2, 10.2d,
+//                10.5d, 8.1d, 13.2d);
+//
+        ServiceManager sm = getInstance("spivverydb");
+        BasicContractDAO BCdao = sm.getBasicContractDAO();
+        DealDAO Ddao = sm.getDealDAO();
+//
+//        BCdao.addContractToDB(ac1);
+//        BCdao.addContractToDB(piv1);
+//
+//        Ddao.addDealToDB(new Deal(0, ac1, Date.valueOf("2015-08-31"), Deal.DealsType.BUY, 1.3356d, ac1.transactionsVolume(1.3356d)));
+//        Ddao.addDealToDB(new Deal(0, ac1, Date.valueOf("2015-09-07"), Deal.DealsType.BUY, 1.3366d, ac1.transactionsVolume(1.3366d)));
+//        Ddao.addDealToDB(new Deal(0, ac1, Date.valueOf("2015-09-14"), Deal.DealsType.BUY, 1.3396d, ac1.transactionsVolume(1.3396d)));
+//        Ddao.addDealToDB(new Deal(0, ac1, Date.valueOf("2015-09-21"), Deal.DealsType.BUY, 1.3416d, ac1.transactionsVolume(1.3416d)));
+//
+//        Ddao.addDealToDB(new Deal(0, piv1, Date.valueOf("2015-11-01"), Deal.DealsType.SELL, 11d, ac1.transactionsVolume(11d)));
+//        Ddao.addDealToDB(new Deal(0, piv1, Date.valueOf("2015-11-08"), Deal.DealsType.SELL, 12d, ac1.transactionsVolume(12d)));
+//        Ddao.addDealToDB(new Deal(0, piv1, Date.valueOf("2015-11-15"), Deal.DealsType.SELL, 15d, ac1.transactionsVolume(15d)));
+//        Ddao.addDealToDB(new Deal(0, piv1, Date.valueOf("2015-11-22"), Deal.DealsType.SELL, 18d, ac1.transactionsVolume(18d)));
 
-        deals.add(new Deal(0, piv1, Date.valueOf("2015-11-01"), Deal.DealsType.SELL, 11d, ac1.transactionsVolume(11d)));
-        deals.add(new Deal(0, piv1, Date.valueOf("2015-11-08"), Deal.DealsType.SELL, 12d, ac1.transactionsVolume(12d)));
-        deals.add(new Deal(0, piv1, Date.valueOf("2015-11-15"), Deal.DealsType.SELL, 15d, ac1.transactionsVolume(15d)));
-        deals.add(new Deal(0,piv1, Date.valueOf("2015-11-22"), Deal.DealsType.SELL, 18d, ac1.transactionsVolume(18d)));
 
-        try{
-            ServiceManager sm = ServiceManager.getInstance("jdbc:sqlite:spivverydb");
-//            sm.addContractToDB(ac1);
-//            sm.addContractToDB(piv1);
+        GenericRawResults<String[]> rawResults =
+                BCdao.queryRaw(
+                        "select * from Contracts ");
 
-            for (Deal deal : deals){
-//                sm.addDealToDB(deal);
+        for (String[] arr : rawResults){
+            for (String s : arr){
+                System.out.print(s + " ");
             }
+            System.out.println();
+        }
 
-            System.out.println("_______");
-            System.out.println("_______");
-            for (String[] stArr : sm.getAllContractsFromDB()){
-                for (String s : stArr){
-                    System.out.print(s + " ");
-                }
-                System.out.println();
+        List<BasicContract> list = BCdao.getAllBasicContracts();
+        for(BasicContract b : list){
+            System.out.println(b);
+        }
 
-            }
-
-        }finally{}
-//         catch (SQLException e) {
-//            e.printStackTrace();
+//        List<Deal> list1 = Ddao.getAllDeal();
+//        for (Deal d :list1){
+//            System.out.println(d);
 //        }
+
     }
-
-
 }

@@ -6,22 +6,22 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.sql.Date;
 
-@DatabaseTable (tableName = "deals")
+@DatabaseTable(tableName = "deals")
 public class Deal {
-    @DatabaseField(generatedId = true, columnName = "deal_id")
-    protected   int id;
+    @DatabaseField(columnName = "deal_id", generatedId = true)
+    protected int id;
     @DatabaseField(columnName = "contract_id", foreign = true)
-    protected  BasicContract basicContract;
+    protected BasicContract basicContract;
     @DatabaseField
-    protected  long dealDate;
+    protected long dealDate;
     @DatabaseField
-    protected  String dealType;
+    protected String dealType;
     @DatabaseField
-    protected  double spotPrice;
+    protected double spotPrice;
     @DatabaseField
-    protected  double volume;
+    protected double volume;
 
-    public Deal(){
+    public Deal() {
 
     }
 

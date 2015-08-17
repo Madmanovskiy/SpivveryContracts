@@ -16,7 +16,7 @@ public class DealDAO extends BaseDaoImpl<Deal, Integer> {
         super(connectionSource, dataClass);
     }
 
-    public List<Deal> getAllBasicContracts() throws SQLException {
+    public List<Deal> getAllDeal() throws SQLException {
         return this.queryForAll();
     }
 

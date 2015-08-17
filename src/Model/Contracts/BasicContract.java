@@ -4,7 +4,6 @@ import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
-
 import java.sql.Date;
 
 @DatabaseTable(tableName = "Contracts")
@@ -31,8 +30,14 @@ public abstract class BasicContract {
     protected double spotRef;
     @DatabaseField
     protected boolean isClose;
-
-    protected Strike strike;
+    @DatabaseField
+    protected double pivot;
+    @DatabaseField
+    protected double lowStrike;
+    @DatabaseField
+    protected double highStrike;
+    @DatabaseField
+    protected double knockout;
 
     @ForeignCollectionField(eager = true)
     protected ForeignCollection<Deal> deals;
@@ -41,7 +46,8 @@ public abstract class BasicContract {
 
     }
 
-    public BasicContract(Bank bank, ContractsType contractsType, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef) {
+    public BasicContract(Bank bank, ContractsType contractsType, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
+                         double pivot, double lowStrike, double highStrike, double knockout) {
         this.bank = bank.toString();
         this.contractsType = contractsType.toString();
         this.dateStart = dateStart.getTime();
@@ -64,8 +70,11 @@ public abstract class BasicContract {
                 dateStart.toLocalDate().getYear();
 //        +OPTIONAL 1 - 2 PARAMETERS;
         isClose = false;
+        this.pivot = pivot;
+        this.lowStrike = lowStrike;
+        this.highStrike = highStrike;
+        this.knockout = knockout;
     }
-
 
     public double getAssetValue() {
         return assetValue;
@@ -131,6 +140,14 @@ public abstract class BasicContract {
         this.deals = deals;
     }
 
+    public double getHighStrike() {
+        return highStrike;
+    }
+
+    public void setHighStrike(double highStrike) {
+        this.highStrike = highStrike;
+    }
+
     public boolean isClose() {
         return isClose;
     }
@@ -139,12 +156,36 @@ public abstract class BasicContract {
         this.isClose = isClose;
     }
 
+    public double getKnockout() {
+        return knockout;
+    }
+
+    public void setKnockout(double knockout) {
+        this.knockout = knockout;
+    }
+
     public int getLeverage() {
         return leverage;
     }
 
     public void setLeverage(int leverage) {
         this.leverage = leverage;
+    }
+
+    public double getLowStrike() {
+        return lowStrike;
+    }
+
+    public void setLowStrike(double lowStrike) {
+        this.lowStrike = lowStrike;
+    }
+
+    public double getPivot() {
+        return pivot;
+    }
+
+    public void setPivot(double pivot) {
+        this.pivot = pivot;
     }
 
     public String getSellAsset() {
@@ -161,14 +202,6 @@ public abstract class BasicContract {
 
     public void setSpotRef(double spotRef) {
         this.spotRef = spotRef;
-    }
-
-    public Strike getStrike() {
-        return strike;
-    }
-
-    public void setStrike(Strike strike) {
-        this.strike = strike;
     }
 
     public boolean IsContractExpired() {

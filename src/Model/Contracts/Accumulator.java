@@ -1,6 +1,7 @@
 package Model.Contracts;
 
 
+import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.sql.Date;
@@ -12,16 +13,17 @@ public class Accumulator extends BasicContract {
 
     }
 
-    public Accumulator(Bank bank, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef) {
-        super(bank, ContractsType.ACC, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef);
+    public Accumulator(Bank bank, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
+                       double lowStrike, double knockout) {
+        super(bank, ContractsType.ACC, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef,0,lowStrike,0,knockout);
     }
 
     public boolean isStrikeCrossedDown(double currentPrice) {
-        return strike.getLowStrike() > currentPrice;
+        return lowStrike > currentPrice;
     }
 
     public boolean isKnockOutCrossedUp(double currentPrice) {
-        return strike.getKnockout() <= currentPrice;
+        return knockout <= currentPrice;
     }
 
     @Override
@@ -34,8 +36,24 @@ public class Accumulator extends BasicContract {
         double result = 0d;
         for (Deal d : getDeals()){
             if (isKnockOutCrossedUp(d.getSpotPrice())) break;
-            result += (d.getSpotPrice() - strike.getLowStrike()) * transactionsVolume(d.getSpotPrice());
+            result += (d.getSpotPrice() - lowStrike) * transactionsVolume(d.getSpotPrice());
         }
         return result;
+    }
+
+    public double getKnockout() {
+        return knockout;
+    }
+
+    public void setKnockout(double knockout) {
+        this.knockout = knockout;
+    }
+
+    public double getLowStrike() {
+        return lowStrike;
+    }
+
+    public void setLowStrike(double lowStrike) {
+        this.lowStrike = lowStrike;
     }
 }

@@ -12,16 +12,17 @@ public class Pivot extends BasicContract {
 
     }
 
-    public Pivot(Bank bank, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef) {
-        super(bank, ContractsType.PIV, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef);
+    public Pivot(Bank bank, Date dateStart, Date dateFinish, Assets buyAsset, Assets sellAsset, double assetValue, int leverage, double spotRef,
+                 double pivot, double lowStrike, double highStrike) {
+        super(bank, ContractsType.PIV, dateStart, dateFinish, buyAsset, sellAsset, assetValue, leverage, spotRef, pivot, lowStrike, highStrike, 0);
     }
 
     public boolean isStrikeCrossedDown(double currentPrice) {
-        return strike.getLowStrike() > currentPrice;
+        return lowStrike > currentPrice;
     }
 
     public boolean isStrikeCrossedUp(double currentPrice) {
-        return strike.getHighStrike()  < currentPrice;
+        return highStrike  < currentPrice;
     }
 
     @Override
@@ -35,12 +36,36 @@ public class Pivot extends BasicContract {
         double result = 0d;
         for (Deal d : getDeals()){
             double pr = d.getSpotPrice();
-            if (pr >= strike.getPivot()) {
-                result += transactionsVolume(pr) * (strike.getHighStrike() - pr);
+            if (pr >= pivot) {
+                result += transactionsVolume(pr) * (highStrike - pr);
             } else {
-                result += transactionsVolume(pr) * (pr - strike.getLowStrike());
+                result += transactionsVolume(pr) * (pr - lowStrike);
             }
         }
         return result;
+    }
+
+    public double getHighStrike() {
+        return highStrike;
+    }
+
+    public void setHighStrike(double highStrike) {
+        this.highStrike = highStrike;
+    }
+
+    public double getLowStrike() {
+        return lowStrike;
+    }
+
+    public void setLowStrike(double lowStrike) {
+        this.lowStrike = lowStrike;
+    }
+
+    public double getPivot() {
+        return pivot;
+    }
+
+    public void setPivot(double pivot) {
+        this.pivot = pivot;
     }
 }
