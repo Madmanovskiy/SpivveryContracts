@@ -1,11 +1,11 @@
 package Model.Contracts;
 
 
-import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.sql.Date;
+import java.util.List;
 
 
 @DatabaseTable(tableName = "Contracts")
@@ -22,7 +22,7 @@ public class Decumulator extends BasicContract {
     public Decumulator(String bank, Date dateStart, Date dateFinish, String buyAsset, String sellAsset, double assetValue, int leverage, double spotRef,
                        double highStrike, double knockout) {
         this.setBank(bank);
-        this.setContractsType("DEC");
+        this.setContractType("DEC");
         this.setDateStart(dateStart);
         this.setDateFinish(dateFinish);
         this.setBuyAsset(buyAsset);
@@ -30,6 +30,7 @@ public class Decumulator extends BasicContract {
         this.setAssetValue(assetValue);
         this.setLeverage(leverage);
         this.setSpotRef(spotRef);
+        this.setIsClose(false);
         this.setKnockout(knockout);
         this.setHighStrike(highStrike);
         this.setContractId();
@@ -49,15 +50,15 @@ public class Decumulator extends BasicContract {
         return isStrikeCrossedUp(currentPrice) ? getAssetValue() * getLeverage() : getAssetValue();
     }
 
-//    @Override
-//    public double calculationResult() {
-//        double result = 0d;
-//        for (Deal d : getDeals()){
-//            if (isKnockOutCrossedUp(d.getSpotPrice())) break;
-//            result += (highStrike - d.getSpotPrice()) * transactionsVolume(d.getSpotPrice());
-//        }
-//        return result;
-//    }
+    @Override
+    public double calculationResult(List<Deal> deals) {
+        double result = 0d;
+        for (Deal d : deals){
+            if (isKnockOutCrossedUp(d.getSpotPrice())) break;
+            result += (highStrike - d.getSpotPrice()) * transactionsVolume(d.getSpotPrice());
+        }
+        return result;
+    }
 
     public double getHighStrike() {
         return highStrike;
@@ -102,8 +103,8 @@ public class Decumulator extends BasicContract {
     }
 
     @Override
-    public void setContractsType(String contractsType) {
-        this.contractsType = contractsType;
+    public void setContractType(String contractsType) {
+        this.contractType = contractsType;
     }
 
     @Override
@@ -129,5 +130,10 @@ public class Decumulator extends BasicContract {
     @Override
     public void setSpotRef(double spotRef) {
         this.spotRef = spotRef;
+    }
+
+    @Override
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

@@ -1,11 +1,11 @@
 package Model.Contracts;
 
 
-import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.sql.Date;
+import java.util.List;
 
 @DatabaseTable(tableName = "Contracts")
 public class Pivot extends BasicContract {
@@ -24,7 +24,7 @@ public class Pivot extends BasicContract {
     public Pivot(String bank, Date dateStart, Date dateFinish, String buyAsset, String sellAsset, double assetValue, int leverage, double spotRef,
                  double pivot, double lowStrike, double highStrike) {
         this.setBank(bank);
-        this.setContractsType("PIV");
+        this.setContractType("PIV");
         this.setDateStart(dateStart);
         this.setDateFinish(dateFinish);
         this.setBuyAsset(buyAsset);
@@ -32,6 +32,7 @@ public class Pivot extends BasicContract {
         this.setAssetValue(assetValue);
         this.setLeverage(leverage);
         this.setSpotRef(spotRef);
+        this.setIsClose(false);
         this.setLowStrike(lowStrike);
         this.setHighStrike(highStrike);
         this.setPivot(pivot);
@@ -51,20 +52,20 @@ public class Pivot extends BasicContract {
         return isStrikeCrossedUp(currentPrice) || isStrikeCrossedDown(currentPrice) ? getAssetValue() * getLeverage() : getAssetValue();
     }
 
-//
-//    @Override
-//    public double calculationResult() {
-//        double result = 0d;
-//        for (Deal d : getDeals()){
-//            double pr = d.getSpotPrice();
-//            if (pr >= pivot) {
-//                result += transactionsVolume(pr) * (highStrike - pr);
-//            } else {
-//                result += transactionsVolume(pr) * (pr - lowStrike);
-//            }
-//        }
-//        return result;
-//    }
+
+    @Override
+    public double calculationResult(List<Deal> deals) {
+        double result = 0d;
+        for (Deal d : deals){
+            double pr = d.getSpotPrice();
+            if (pr >= pivot) {
+                result += transactionsVolume(pr) * (highStrike - pr);
+            } else {
+                result += transactionsVolume(pr) * (pr - lowStrike);
+            }
+        }
+        return result;
+    }
 
     public double getLowStrike() {
         return lowStrike;
@@ -116,8 +117,8 @@ public class Pivot extends BasicContract {
     }
 
     @Override
-    public void setContractsType(String contractsType) {
-        this.contractsType = contractsType;
+    public void setContractType(String contractsType) {
+        this.contractType = contractsType;
     }
 
     @Override
@@ -143,5 +144,10 @@ public class Pivot extends BasicContract {
     @Override
     public void setSpotRef(double spotRef) {
         this.spotRef = spotRef;
+    }
+
+    @Override
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

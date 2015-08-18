@@ -1,7 +1,6 @@
 package Model.Contracts;
 
 
-import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -22,7 +21,7 @@ public class Accumulator extends BasicContract {
     public Accumulator(String bank, Date dateStart, Date dateFinish, String buyAsset, String sellAsset, double assetValue, int leverage, double spotRef,
                        double lowStrike, double knockout) {
         this.setBank(bank);
-        this.setContractsType("ACC");
+        this.setContractType("ACC");
         this.setDateStart(dateStart);
         this.setDateFinish(dateFinish);
         this.setBuyAsset(buyAsset);
@@ -30,6 +29,7 @@ public class Accumulator extends BasicContract {
         this.setAssetValue(assetValue);
         this.setLeverage(leverage);
         this.setSpotRef(spotRef);
+        this.setIsClose(false);
         this.setLowStrike(lowStrike);
         this.setKnockout(knockout);
         this.setContractId();
@@ -100,8 +100,8 @@ public class Accumulator extends BasicContract {
     }
 
     @Override
-    public void setContractsType(String contractsType) {
-        this.contractsType = contractsType;
+    public void setContractType(String contractsType) {
+        this.contractType = contractsType;
     }
 
     @Override
@@ -127,5 +127,10 @@ public class Accumulator extends BasicContract {
     @Override
     public void setSpotRef(double spotRef) {
         this.spotRef = spotRef;
+    }
+
+    @Override
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

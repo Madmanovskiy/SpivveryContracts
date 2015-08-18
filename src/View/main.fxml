@@ -30,23 +30,24 @@
                     </AnchorPane>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                       <children>
-                        <TableView prefHeight="567.0" prefWidth="574.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TableView prefHeight="567.0" prefWidth="574.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" fx:id="contractsTable">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="id" />
-                            <TableColumn prefWidth="75.0" text="bank" />
-                            <TableColumn prefWidth="75.0" text="type" />
-                            <TableColumn prefWidth="75.0" text="start" />
-                            <TableColumn prefWidth="75.0" text="finish" />
-                            <TableColumn prefWidth="75.0" text="buy" />
-                            <TableColumn prefWidth="75.0" text="sell" />
-                            <TableColumn prefWidth="75.0" text="value" />
-                            <TableColumn prefWidth="75.0" text="leverage" />
-                            <TableColumn prefWidth="75.0" text="spotRef" />
-                            <TableColumn prefWidth="75.0" text="isClose" />
-                            <TableColumn prefWidth="75.0" text="highStrike" />
-                            <TableColumn prefWidth="75.0" text="lowStrike" />
-                            <TableColumn prefWidth="75.0" text="knockout" />
-                            <TableColumn prefWidth="75.0" text="pivot" />
+                            <TableColumn prefWidth="75.0" text="id" fx:id="idColumn"/>
+                            <TableColumn prefWidth="75.0" text="bank" fx:id="bankColumn"/>
+                            <TableColumn prefWidth="75.0" text="type" fx:id="typeColumn"/>
+                            <TableColumn prefWidth="75.0" text="start" fx:id="startColumn"/>
+                            <TableColumn prefWidth="75.0" text="finish" fx:id="finishColumn"/>
+                            <TableColumn prefWidth="75.0" text="buy" fx:id="buyColumn"/>
+                            <TableColumn prefWidth="75.0" text="sell" fx:id="sellColumn"/>
+                            <TableColumn prefWidth="75.0" text="value" fx:id="valueColumn"/>
+                            <TableColumn prefWidth="75.0" text="leverage" fx:id="leverageColumn"/>
+                            <TableColumn prefWidth="75.0" text="spotRef" fx:id="spotRefColumn"/>
+                            <TableColumn prefWidth="75.0" text="isClose" fx:id="isCloseColumn"/>
+                            <TableColumn prefWidth="75.0" text="quantity" fx:id="quantityColumn"/>
+                            <TableColumn prefWidth="75.0" text="highStrike" fx:id="highStrikeColumn"/>
+                            <TableColumn prefWidth="75.0" text="lowStrike" fx:id="lowStrikeColumn"/>
+                            <TableColumn prefWidth="75.0" text="knockout" fx:id="knockoutColumn"/>
+                            <TableColumn prefWidth="75.0" text="pivot" fx:id="pivotColumn"/>
                           </columns>
                         </TableView>
                       </children>

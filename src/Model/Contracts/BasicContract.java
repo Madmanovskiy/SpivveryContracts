@@ -1,11 +1,10 @@
 package Model.Contracts;
 
-import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.sql.Date;
+import java.util.List;
 
 @DatabaseTable(tableName = "Contracts")
 public abstract class BasicContract {
@@ -14,7 +13,7 @@ public abstract class BasicContract {
     @DatabaseField
     protected String bank;
     @DatabaseField(columnName = "type")
-    protected String contractsType;
+    protected String contractType;
     @DatabaseField
     protected Date dateStart;
     @DatabaseField
@@ -31,18 +30,25 @@ public abstract class BasicContract {
     protected double spotRef;
     @DatabaseField
     protected boolean isClose;
+    @DatabaseField
+    protected int quantity;
 
     protected String generatedId() {
         int tempDay = dateStart.toLocalDate().getDayOfMonth();
         int tempMonth = dateStart.toLocalDate().getMonthValue();
 
         return bank +
-                contractsType +
+                contractType +
                 buyAsset +
                 sellAsset +
                 (tempDay < 10 ? ("0" + tempDay) : tempDay) +
                 (tempMonth < 10 ? ("0" + tempMonth) : tempMonth) +
                 dateStart.toLocalDate().getYear();
+    }
+
+
+    public int getQuantity() {
+        return quantity;
     }
 
     public double getAssetValue() {
@@ -61,8 +67,8 @@ public abstract class BasicContract {
         return contractId;
     }
 
-    public String getContractsType() {
-        return contractsType;
+    public String getContractType() {
+        return contractType;
     }
 
     public Date getDateFinish() {
@@ -97,7 +103,7 @@ public abstract class BasicContract {
 
     public abstract void setBuyAsset(String buyAsset);
 
-    public abstract void setContractsType(String contractsType);
+    public abstract void setContractType(String contractType);
 
     public abstract void setDateFinish(Date dateFinish);
 
@@ -111,6 +117,8 @@ public abstract class BasicContract {
 
     public abstract void setSpotRef(double spotRef);
 
+    public abstract void setQuantity(int quantity);
+
     public boolean IsContractExpired() {
         return getRemainingWeeks(new Date(new java.util.Date().getTime())) < 0;
     }
@@ -119,7 +127,7 @@ public abstract class BasicContract {
         return (dateFinish.toLocalDate().getDayOfYear() - fromDate.toLocalDate().getDayOfYear()) / 7;
     }
 
-//    public abstract double calculationResult();
+    public abstract double calculationResult(List<Deal> deals);
 
     public abstract double transactionsVolume(double currentPrice);
 
@@ -128,7 +136,7 @@ public abstract class BasicContract {
         return "BasicContract{" +
                 "contractId='" + contractId + '\'' +
                 ", bank='" + bank + '\'' +
-                ", contractsType='" + contractsType + '\'' +
+                ", contractType='" + contractType + '\'' +
                 ", dateStart=" + dateStart +
                 ", dateFinish=" + dateFinish +
                 ", buyAsset='" + buyAsset + '\'' +
