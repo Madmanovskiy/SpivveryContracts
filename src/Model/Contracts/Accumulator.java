@@ -6,6 +6,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.sql.Date;
+import java.util.List;
 
 @DatabaseTable(tableName = "Contracts")
 public class Accumulator extends BasicContract {
@@ -47,15 +48,15 @@ public class Accumulator extends BasicContract {
         return isStrikeCrossedDown(currentPrice) ? getAssetValue() * getLeverage() : getAssetValue();
     }
 
-//    @Override
-//    public double calculationResult() {
-//        double result = 0d;
-//        for (Deal d : getDeals()){
-//            if (isKnockOutCrossedUp(d.getSpotPrice())) break;
-//            result += (d.getSpotPrice() - lowStrike) * transactionsVolume(d.getSpotPrice());
-//        }
-//        return result;
-//    }
+    @Override
+    public double calculationResult(List<Deal> deals) {
+        double result = 0d;
+        for (Deal d : deals){
+            if (isKnockOutCrossedUp(d.getSpotPrice())) break;
+            result += (d.getSpotPrice() - lowStrike) * transactionsVolume(d.getSpotPrice());
+        }
+        return result;
+    }
 
     public double getKnockout() {
         return knockout;
