@@ -118,7 +118,6 @@ public class Accumulator extends BasicContract {
         this.deals = deals;
     }
 
-
     @Override
     public void setIsClose(boolean isClose) {
         this.isClose = isClose;

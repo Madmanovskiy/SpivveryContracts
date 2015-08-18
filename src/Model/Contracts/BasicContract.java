@@ -32,9 +32,6 @@ public abstract class BasicContract {
     @DatabaseField
     protected boolean isClose;
 
-    @ForeignCollectionField(eager = true)
-    protected ForeignCollection<Deal> deals;
-
     protected String generatedId() {
         int tempDay = dateStart.toLocalDate().getDayOfMonth();
         int tempMonth = dateStart.toLocalDate().getMonthValue();
@@ -76,10 +73,6 @@ public abstract class BasicContract {
         return dateStart;
     }
 
-    public ForeignCollection<Deal> getDeals() {
-        return deals;
-    }
-
     public boolean isClose() {
         return isClose;
     }
@@ -109,8 +102,6 @@ public abstract class BasicContract {
     public abstract void setDateFinish(Date dateFinish);
 
     public abstract void setDateStart(Date dateStart);
-
-    public abstract void setDeals(ForeignCollection<Deal> deals);
 
     public abstract void setIsClose(boolean isClose);
 

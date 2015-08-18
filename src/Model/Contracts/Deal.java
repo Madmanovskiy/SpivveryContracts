@@ -10,8 +10,8 @@ import java.sql.Date;
 public class Deal {
     @DatabaseField(columnName = "deal_id", generatedId = true)
     protected int id;
-    @DatabaseField(columnName = "contract_id", foreign = true)
-    protected Accumulator basicContract;
+    @DatabaseField(columnName = "contract_id")
+    protected String contractId;
     @DatabaseField
     protected Date dealDate;
     @DatabaseField
@@ -25,8 +25,8 @@ public class Deal {
 
     }
 
-    public Deal(Accumulator basicContract, Date dealDate, String dealType, double spotPrice, double volume) {
-        this.basicContract = basicContract;
+    public Deal(String contractId, Date dealDate, String dealType, double spotPrice, double volume) {
+        this.contractId = contractId;
         this.dealDate = dealDate;
         this.dealType = dealType;
         this.spotPrice = spotPrice;
@@ -37,45 +37,44 @@ public class Deal {
         return id;
     }
 
-    public BasicContract getBasicContract() {
-        return basicContract;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
     }
 
     public Date getDealDate() {
         return dealDate;
     }
 
-    public String getDealType() {
-        return dealType;
-    }
-
-    public double getSpotPrice() {
-        return spotPrice;
-    }
-
-    public double getVolume() {
-        return volume;
-    }
-
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setBasicContract(Accumulator basicContract) {
-        this.basicContract = basicContract;
-    }
-
     public void setDealDate(Date dealDate) {
         this.dealDate = dealDate;
+    }
+
+    public String getDealType() {
+        return dealType;
     }
 
     public void setDealType(String dealType) {
         this.dealType = dealType;
     }
 
+    public double getSpotPrice() {
+        return spotPrice;
+    }
+
     public void setSpotPrice(double spotPrice) {
         this.spotPrice = spotPrice;
+    }
+
+    public double getVolume() {
+        return volume;
     }
 
     public void setVolume(double volume) {
@@ -86,7 +85,7 @@ public class Deal {
     public String toString() {
         return "Deal{" +
                 "id=" + id +
-                ", basicContract=" + basicContract +
+                ", basicContract=" + contractId +
                 ", dealDate=" + dealDate +
                 ", dealType='" + dealType + '\'' +
                 ", spotPrice=" + spotPrice +
