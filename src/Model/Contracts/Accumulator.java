@@ -47,15 +47,15 @@ public class Accumulator extends BasicContract {
         return isStrikeCrossedDown(currentPrice) ? getAssetValue() * getLeverage() : getAssetValue();
     }
 
-    @Override
-    public double calculationResult() {
-        double result = 0d;
-        for (Deal d : getDeals()){
-            if (isKnockOutCrossedUp(d.getSpotPrice())) break;
-            result += (d.getSpotPrice() - lowStrike) * transactionsVolume(d.getSpotPrice());
-        }
-        return result;
-    }
+//    @Override
+//    public double calculationResult() {
+//        double result = 0d;
+//        for (Deal d : getDeals()){
+//            if (isKnockOutCrossedUp(d.getSpotPrice())) break;
+//            result += (d.getSpotPrice() - lowStrike) * transactionsVolume(d.getSpotPrice());
+//        }
+//        return result;
+//    }
 
     public double getKnockout() {
         return knockout;
@@ -111,11 +111,6 @@ public class Accumulator extends BasicContract {
     @Override
     public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
-    }
-
-    @Override
-    public void setDeals(ForeignCollection<Deal> deals) {
-        this.deals = deals;
     }
 
     @Override

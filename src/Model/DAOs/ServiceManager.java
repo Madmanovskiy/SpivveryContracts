@@ -73,16 +73,16 @@ public final class ServiceManager {
 //                10.5d, 8.1d, 13.2d);
 //
         ServiceManager sm = getInstance("spivverydb");
-        BasicContractDAO BCdao = sm.getBasicContractDAO();
+//        BasicContractDAO BCdao = sm.getBasicContractDAO();
         DealDAO Ddao = sm.getDealDAO();
 //
 //        BCdao.addContractToDB(ac1);
 //        BCdao.addContractToDB(piv1);
 //
-//        Ddao.addDealToDB(new Deal(ac1, Date.valueOf("2015-08-31"), "B", 1.3356d, ac1.transactionsVolume(1.3356d)));
-//        Ddao.addDealToDB(new Deal(ac1, Date.valueOf("2015-09-07"), "B", 1.3366d, ac1.transactionsVolume(1.3366d)));
-//        Ddao.addDealToDB(new Deal(ac1, Date.valueOf("2015-09-14"), "B", 1.3396d, ac1.transactionsVolume(1.3396d)));
-//        Ddao.addDealToDB(new Deal(ac1, Date.valueOf("2015-09-21"), "B", 1.3416d, ac1.transactionsVolume(1.3416d)));
+        Ddao.addDealToDB(new Deal("BNP_ACCEURUSD25082015", Date.valueOf("2015-08-31"), "B", 1.3356d, ac1.transactionsVolume(1.3356d)));
+        Ddao.addDealToDB(new Deal("BNP_ACCEURUSD25082015", Date.valueOf("2015-09-07"), "B", 1.3366d, ac1.transactionsVolume(1.3366d)));
+        Ddao.addDealToDB(new Deal("BNP_ACCEURUSD25082015", Date.valueOf("2015-09-14"), "B", 1.3396d, ac1.transactionsVolume(1.3396d)));
+        Ddao.addDealToDB(new Deal("BNP_ACCEURUSD25082015", Date.valueOf("2015-09-21"), "B", 1.3416d, ac1.transactionsVolume(1.3416d)));
 //
 //        Ddao.addDealToDB(new Deal(piv1, Date.valueOf("2015-11-01"), "S", 11d, ac1.transactionsVolume(11d)));
 //        Ddao.addDealToDB(new Deal(piv1, Date.valueOf("2015-11-08"), "S", 12d, ac1.transactionsVolume(12d)));
@@ -90,17 +90,20 @@ public final class ServiceManager {
 //        Ddao.addDealToDB(new Deal(piv1, Date.valueOf("2015-11-22"), "S", 18d, ac1.transactionsVolume(18d)));
 
 
-        List<Accumulator> list = BCdao.queryForEq("contract_id", "BNP_ACCEURUSD25082015");
-        for (Accumulator b : list) {
-            System.out.println(b);
+        List<Deal> deals = Ddao.queryForEq("contract_id", "BNP_ACCEURUSD25082015");
+        for(Deal d : deals){
+            System.out.println(d);
+        }
+
+
+//        List<Accumulator> list = BCdao.queryForEq("contract_id", "BNP_ACCEURUSD25082015");
+//        for (Accumulator b : list) {
+//            System.out.println(b);
 //            Ddao.addDealToDB(new Deal(b, Date.valueOf("2015-10-01"), "S", 1.3416d, ac1.transactionsVolume(1.3416d)));
 //            Ddao.addDealToDB(new Deal(b, Date.valueOf("2015-11-01"), "S", 1.3416d, ac1.transactionsVolume(1.3416d)));
 
-            List<Deal> deals = Ddao.queryForEq("contract_id", "BNP_ACCEURUSD25082015");
-            for(Deal d : deals){
-                System.out.println(d);
-            }
-        }
+
+//        }
 //        List<Deal> list1 = Ddao.getAllDeal();
 //        for (Deal d : list1) {
 //            System.out.println(d);

@@ -51,20 +51,20 @@ public class Pivot extends BasicContract {
         return isStrikeCrossedUp(currentPrice) || isStrikeCrossedDown(currentPrice) ? getAssetValue() * getLeverage() : getAssetValue();
     }
 
-
-    @Override
-    public double calculationResult() {
-        double result = 0d;
-        for (Deal d : getDeals()){
-            double pr = d.getSpotPrice();
-            if (pr >= pivot) {
-                result += transactionsVolume(pr) * (highStrike - pr);
-            } else {
-                result += transactionsVolume(pr) * (pr - lowStrike);
-            }
-        }
-        return result;
-    }
+//
+//    @Override
+//    public double calculationResult() {
+//        double result = 0d;
+//        for (Deal d : getDeals()){
+//            double pr = d.getSpotPrice();
+//            if (pr >= pivot) {
+//                result += transactionsVolume(pr) * (highStrike - pr);
+//            } else {
+//                result += transactionsVolume(pr) * (pr - lowStrike);
+//            }
+//        }
+//        return result;
+//    }
 
     public double getLowStrike() {
         return lowStrike;
@@ -128,11 +128,6 @@ public class Pivot extends BasicContract {
     @Override
     public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
-    }
-
-    @Override
-    public void setDeals(ForeignCollection<Deal> deals) {
-        this.deals = deals;
     }
 
     @Override

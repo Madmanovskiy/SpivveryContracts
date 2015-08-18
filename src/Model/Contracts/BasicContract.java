@@ -119,7 +119,7 @@ public abstract class BasicContract {
         return (dateFinish.toLocalDate().getDayOfYear() - fromDate.toLocalDate().getDayOfYear()) / 7;
     }
 
-    public abstract double calculationResult();
+//    public abstract double calculationResult();
 
     public abstract double transactionsVolume(double currentPrice);
 

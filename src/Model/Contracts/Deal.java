@@ -6,7 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.sql.Date;
 
-@DatabaseTable(tableName = "deals")
+@DatabaseTable(tableName = "Deals")
 public class Deal {
     @DatabaseField(columnName = "deal_id", generatedId = true)
     protected int id;

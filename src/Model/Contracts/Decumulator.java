@@ -49,15 +49,15 @@ public class Decumulator extends BasicContract {
         return isStrikeCrossedUp(currentPrice) ? getAssetValue() * getLeverage() : getAssetValue();
     }
 
-    @Override
-    public double calculationResult() {
-        double result = 0d;
-        for (Deal d : getDeals()){
-            if (isKnockOutCrossedUp(d.getSpotPrice())) break;
-            result += (highStrike - d.getSpotPrice()) * transactionsVolume(d.getSpotPrice());
-        }
-        return result;
-    }
+//    @Override
+//    public double calculationResult() {
+//        double result = 0d;
+//        for (Deal d : getDeals()){
+//            if (isKnockOutCrossedUp(d.getSpotPrice())) break;
+//            result += (highStrike - d.getSpotPrice()) * transactionsVolume(d.getSpotPrice());
+//        }
+//        return result;
+//    }
 
     public double getHighStrike() {
         return highStrike;
@@ -114,11 +114,6 @@ public class Decumulator extends BasicContract {
     @Override
     public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
-    }
-
-    @Override
-    public void setDeals(ForeignCollection<Deal> deals) {
-        this.deals = deals;
     }
 
     @Override
