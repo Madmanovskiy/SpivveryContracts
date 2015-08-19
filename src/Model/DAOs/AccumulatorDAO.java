@@ -16,7 +16,7 @@ public class AccumulatorDAO extends BaseDaoImpl<Accumulator, String> implements 
 
     @Override
     public List<Accumulator> getAllItems() throws SQLException {
-        return this.queryForAll();
+        return this.queryForEq("type", "ACC");
     }
 
     @Override

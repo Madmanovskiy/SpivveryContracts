@@ -15,15 +15,19 @@ import java.sql.SQLException;
 public final class DataBaseManager {
 
     private static DataBaseManager instance;
-    private final String url;
+    private String url;
     private ConnectionSource source;
     private AccumulatorDAO accDAO;
     private DecumulatorDAO decDAO;
     private PivotDAO pivDAO;
 
-    private DataBaseManager(String dbDestination) {
-        this.url = "jdbc:sqlite:" + dbDestination;
+    public ConnectionSource getSource() {
+        return source;
+    }
+
+    private DataBaseManager(String url) {
         try {
+            this.url = url;
             source = new JdbcConnectionSource(url);
         } catch (SQLException e) {
             e.printStackTrace();

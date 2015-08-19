@@ -9,84 +9,44 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.GridPane?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="Conrtoller.RealContractsController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Conrtoller.AdviserController">
   <children>
-    <TabPane prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="0.0">
-      <tabs>
-        <Tab text="real contracts">
-          <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-              <children>
-                <SplitPane dividerPositions="0.2769423558897243" focusTraversable="true" prefHeight="569.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                  <items>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                      <children>
-                        <Button layoutX="14.0" layoutY="128.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="149.0" text="getAllContracts" />
-                        <Button layoutX="14.0" layoutY="207.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="149.0" text="getContractByKey" />
-                        <Button layoutX="14.0" layoutY="290.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="149.0" text="calculation" />
-                        <Button layoutX="115.0" layoutY="499.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="89.0" text="clear data" />
-                        <Button layoutX="14.0" layoutY="52.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="149.0" text="addNewContract" />
-                      </children>
-                    </AnchorPane>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                      <children>
-                        <TableView prefHeight="567.0" prefWidth="574.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" fx:id="contractsTable">
-                          <columns>
-                            <TableColumn prefWidth="75.0" text="id" fx:id="idColumn"/>
-                            <TableColumn prefWidth="75.0" text="bank" fx:id="bankColumn"/>
-                            <TableColumn prefWidth="75.0" text="type" fx:id="typeColumn"/>
-                            <TableColumn prefWidth="75.0" text="start" fx:id="startColumn"/>
-                            <TableColumn prefWidth="75.0" text="finish" fx:id="finishColumn"/>
-                            <TableColumn prefWidth="75.0" text="buy" fx:id="buyColumn"/>
-                            <TableColumn prefWidth="75.0" text="sell" fx:id="sellColumn"/>
-                            <TableColumn prefWidth="75.0" text="value" fx:id="valueColumn"/>
-                            <TableColumn prefWidth="75.0" text="leverage" fx:id="leverageColumn"/>
-                            <TableColumn prefWidth="75.0" text="spotRef" fx:id="spotRefColumn"/>
-                            <TableColumn prefWidth="75.0" text="isClose" fx:id="isCloseColumn"/>
-                            <TableColumn prefWidth="75.0" text="quantity" fx:id="quantityColumn"/>
-                            <TableColumn prefWidth="75.0" text="highStrike" fx:id="highStrikeColumn"/>
-                            <TableColumn prefWidth="75.0" text="lowStrike" fx:id="lowStrikeColumn"/>
-                            <TableColumn prefWidth="75.0" text="knockout" fx:id="knockoutColumn"/>
-                            <TableColumn prefWidth="75.0" text="pivot" fx:id="pivotColumn"/>
-                          </columns>
-                        </TableView>
-                      </children>
-                    </AnchorPane>
-                  </items>
-                </SplitPane>
-              </children>
-            </AnchorPane>
-          </content>
-        </Tab>
-        <Tab text="hedging">
-          <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-              <children>
-                <SplitPane dividerPositions="0.449874686716792" focusTraversable="true" prefHeight="569.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                  <items>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                  </items>
-                </SplitPane>
-              </children>
-            </AnchorPane>
-          </content>
-        </Tab>
-        <Tab text="standart">
-          <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-              <children>
-                <SplitPane dividerPositions="0.449874686716792" focusTraversable="true" prefHeight="569.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                  <items>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                  </items>
-                </SplitPane>
-              </children>
-            </AnchorPane>
-          </content>
-        </Tab>
-      </tabs>
-    </TabPane>
+      <SplitPane dividerPositions="0.29797979797979796" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+    <children>
+      <Button layoutX="14.0" layoutY="128.0" mnemonicParsing="false" onAction="#handleGetAllContracts" prefHeight="46.0" prefWidth="149.0" text="getAllContracts" />
+      <Button layoutX="14.0" layoutY="207.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="149.0" text="getContractByKey" />
+      <Button layoutX="14.0" layoutY="290.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="149.0" text="calculation" />
+      <Button layoutX="115.0" layoutY="499.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="89.0" text="clear data" />
+      <Button layoutX="14.0" layoutY="52.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="149.0" text="addNewContract" />
+    </children>
+  </AnchorPane>
+  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+    <children>
+      <TableView fx:id="contractTable" prefHeight="567.0" prefWidth="574.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columns>
+          <TableColumn fx:id="idColumn" prefWidth="75.0" text="id" />
+          <TableColumn fx:id="bankColumn" prefWidth="75.0" text="bank" />
+          <TableColumn fx:id="typeColumn" prefWidth="75.0" text="type" />
+          <TableColumn fx:id="startColumn" prefWidth="75.0" text="start" />
+          <TableColumn fx:id="finishColumn" prefWidth="75.0" text="finish" />
+          <TableColumn fx:id="buyColumn" prefWidth="75.0" text="buy" />
+          <TableColumn fx:id="sellColumn" prefWidth="75.0" text="sell" />
+          <TableColumn fx:id="valueColumn" prefWidth="75.0" text="value" />
+          <TableColumn fx:id="leverageColumn" prefWidth="75.0" text="leverage" />
+          <TableColumn fx:id="spotRefColumn" prefWidth="75.0" text="spotRef" />
+          <TableColumn fx:id="isCloseColumn" prefWidth="75.0" text="isClose" />
+          <TableColumn fx:id="quantityColumn" prefWidth="75.0" text="quantity" />
+          <TableColumn fx:id="highStrikeColumn" prefWidth="75.0" text="highStrike" />
+          <TableColumn fx:id="lowStrikeColumn" prefWidth="75.0" text="lowStrike" />
+          <TableColumn fx:id="knockoutColumn" prefWidth="75.0" text="knockout" />
+          <TableColumn fx:id="pivotColumn" prefWidth="75.0" text="pivot" />
+        </columns>
+      </TableView>
+    </children>
+  </AnchorPane>
+        </items>
+      </SplitPane>
   </children>
 </AnchorPane>

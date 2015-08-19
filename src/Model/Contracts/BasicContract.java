@@ -6,7 +6,6 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.sql.Date;
 import java.util.List;
 
-@DatabaseTable(tableName = "Contracts")
 public abstract class BasicContract {
     @DatabaseField(id = true,  columnName = "contract_id")
     protected String contractId;

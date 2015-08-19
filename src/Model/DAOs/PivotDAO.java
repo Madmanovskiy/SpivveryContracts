@@ -17,7 +17,7 @@ public class PivotDAO extends BaseDaoImpl<Pivot, String> implements Queryable<Pi
 
     @Override
     public List<Pivot> getAllItems() throws SQLException {
-        return this.queryForAll();
+        return this.queryForEq("type", "PIV");
     }
 
     @Override

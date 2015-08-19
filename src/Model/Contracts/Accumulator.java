@@ -9,9 +9,9 @@ import java.util.List;
 
 @DatabaseTable(tableName = "Contracts")
 public class Accumulator extends BasicContract {
-    @DatabaseField(columnName = "lowstrike")
+    @DatabaseField
     double lowStrike;
-    @DatabaseField(columnName = "pivot")
+    @DatabaseField
     double knockout;
 
     public Accumulator() {

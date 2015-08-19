@@ -1,11 +1,15 @@
 package Conrtoller;
 
+import Model.Contracts.Accumulator;
 import Model.Contracts.BasicContract;
+import Model.DAOs.DataBaseManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -13,7 +17,7 @@ import java.util.List;
  */
 public class AdviserController {
     @FXML
-    private TableView<BasicContract>contractTable;
+    private TableView<BasicContract> contractTable;
 
     @FXML
     private TableColumn<BasicContract, String> idColumn;
@@ -50,19 +54,37 @@ public class AdviserController {
 
     public AdviserController() {
 
-
     }
 
     @FXML
-    private void initialize(){
-
+    private void initialize() {
+        idColumn.setCellValueFactory(new PropertyValueFactory<BasicContract, String>("contractId"));
+        bankColumn.setCellValueFactory(new PropertyValueFactory<BasicContract, String>("bank"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<BasicContract, String>("contractType"));
+        startColumn.setCellValueFactory(new PropertyValueFactory<BasicContract, Date>("dateStart"));
+        finishColumn.setCellValueFactory(new PropertyValueFactory<BasicContract, Date>("dateFinish"));
+        buyColumn.setCellValueFactory(new PropertyValueFactory<BasicContract, String>("buyAsset"));
+        sellColumn.setCellValueFactory(new PropertyValueFactory<BasicContract, String>("sellAsset"));
+        valueColumn.setCellValueFactory(new PropertyValueFactory<BasicContract, Double>("assetValue"));
+        leverageColumn.setCellValueFactory(new PropertyValueFactory<BasicContract, Integer>("leverage"));
+        spotRefColumn.setCellValueFactory(new PropertyValueFactory<BasicContract, Double>("spotRef"));
+        isCloseColumn.setCellValueFactory(new PropertyValueFactory<BasicContract, Boolean>("isClose"));
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<BasicContract, Integer>("quantity"));
+        highStrikeColumn.setCellValueFactory(new PropertyValueFactory<BasicContract, Double>("highStrike"));
+        lowStrikeColumn.setCellValueFactory(new PropertyValueFactory<BasicContract, Double>("lowStrike"));
+        knockoutColumn.setCellValueFactory(new PropertyValueFactory<BasicContract, Double>("knockout"));
+        pivotColumn.setCellValueFactory(new PropertyValueFactory<BasicContract, Double>("pivot"));
     }
 
     @FXML
-    private void handleGetAllContracts(){
-        contractTable.getItems().clear();
-
-//        contractTable.getItems().addAll()
+    private void handleGetAllContracts() {
+        try {
+            contractTable.getItems().clear();
+            List<Accumulator> tempList = DataBaseManager.getInstance("jdbc:sqlite:spivverydb").getAccDAO().getAllItems();
+            contractTable.getItems().addAll(tempList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

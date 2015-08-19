@@ -17,7 +17,7 @@ public class DecumulatorDAO extends BaseDaoImpl<Decumulator, String> implements 
 
     @Override
     public List<Decumulator> getAllItems() throws SQLException {
-        return this.queryForAll();
+        return this.queryForEq("type", "DEC");
     }
 
     @Override

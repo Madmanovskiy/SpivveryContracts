@@ -13,6 +13,7 @@ public class Decumulator extends BasicContract {
 
     @DatabaseField
     double highStrike;
+    @DatabaseField
     double knockout;
 
     public Decumulator() {
